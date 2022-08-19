@@ -1,18 +1,22 @@
+import React from "react"
+
+import { Routes } from "@blitzjs/next"
+import { useMutation } from "@blitzjs/rpc"
 import { AuthenticationError, PromiseReturnType } from "blitz"
 import Link from "next/link"
-import { LabeledTextField } from "app/core/components/LabeledTextField"
-import { Form, FORM_ERROR } from "app/core/components/Form"
+
 import login from "app/auth/mutations/login"
 import { Login } from "app/auth/validations"
-import { useMutation } from "@blitzjs/rpc"
-import { Routes } from "@blitzjs/next"
+import Form, { FORM_ERROR, OnSubmitResult } from "app/core/components/Form"
+import { LabeledTextField } from "app/core/components/LabeledTextField"
 
 type LoginFormProps = {
   onSuccess?: (user: PromiseReturnType<typeof login>) => void
 }
 
-export const LoginForm = (props: LoginFormProps) => {
+export const LoginForm: React.FC<LoginFormProps> = (props) => {
   const [loginMutation] = useMutation(login)
+
   return (
     <div>
       <h1>Login</h1>
@@ -21,18 +25,17 @@ export const LoginForm = (props: LoginFormProps) => {
         submitText="Login"
         schema={Login}
         initialValues={{ email: "", password: "" }}
-        onSubmit={async (values) => {
+        onSubmit={async (values): Promise<OnSubmitResult | undefined> => {
           try {
             const user = await loginMutation(values)
             props.onSuccess?.(user)
           } catch (error: any) {
             if (error instanceof AuthenticationError) {
               return { [FORM_ERROR]: "Sorry, those credentials are invalid" }
-            } else {
-              return {
-                [FORM_ERROR]:
-                  "Sorry, we had an unexpected error. Please try again. - " + error.toString(),
-              }
+            }
+
+            return {
+              [FORM_ERROR]: `Sorry, we had an unexpected error. Please try again. - ${error.toString()}`,
             }
           }
         }}

@@ -1,4 +1,6 @@
-import Document, { Html, Main, NextScript, Head } from "next/document"
+import React from "react"
+
+import Document, { Head, Html, Main, NextScript } from "next/document"
 
 class MyDocument extends Document {
   // Only uncomment if you need to customize this behaviour
@@ -6,7 +8,7 @@ class MyDocument extends Document {
   //   const initialProps = await Document.getInitialProps(ctx)
   //   return {...initialProps}
   // }
-  render() {
+  render(): React.ReactElement {
     return (
       <Html lang="en">
         <Head />

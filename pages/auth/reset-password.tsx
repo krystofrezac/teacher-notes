@@ -1,12 +1,15 @@
-import Layout from "app/core/layouts/Layout"
-import { LabeledTextField } from "app/core/components/LabeledTextField"
-import { Form, FORM_ERROR } from "app/core/components/Form"
-import { ResetPassword } from "app/auth/validations"
-import resetPassword from "app/auth/mutations/resetPassword"
+import React from "react"
+
 import { BlitzPage, Routes } from "@blitzjs/next"
-import { useRouter } from "next/router"
 import { useMutation } from "@blitzjs/rpc"
 import Link from "next/link"
+import { useRouter } from "next/router"
+
+import resetPassword from "app/auth/mutations/resetPassword"
+import { ResetPassword } from "app/auth/validations"
+import Form, { FORM_ERROR, OnSubmitResult } from "app/core/components/Form"
+import { LabeledTextField } from "app/core/components/LabeledTextField"
+import Layout from "app/core/layouts/Layout"
 
 const ResetPasswordPage: BlitzPage = () => {
   const router = useRouter()
@@ -32,7 +35,7 @@ const ResetPasswordPage: BlitzPage = () => {
             passwordConfirmation: "",
             token: router.query.token as string,
           }}
-          onSubmit={async (values) => {
+          onSubmit={async (values): Promise<OnSubmitResult | undefined> => {
             try {
               await resetPasswordMutation(values)
             } catch (error: any) {
@@ -40,10 +43,10 @@ const ResetPasswordPage: BlitzPage = () => {
                 return {
                   [FORM_ERROR]: error.message,
                 }
-              } else {
-                return {
-                  [FORM_ERROR]: "Sorry, we had an unexpected error. Please try again.",
-                }
+              }
+
+              return {
+                [FORM_ERROR]: "Sorry, we had an unexpected error. Please try again.",
               }
             }
           }}
@@ -61,6 +64,8 @@ const ResetPasswordPage: BlitzPage = () => {
 }
 
 ResetPasswordPage.redirectAuthenticatedTo = "/"
-ResetPasswordPage.getLayout = (page) => <Layout title="Reset Your Password">{page}</Layout>
+ResetPasswordPage.getLayout = (page): React.ReactElement => (
+  <Layout title="Reset Your Password">{page}</Layout>
+)
 
 export default ResetPasswordPage

@@ -1,6 +1,7 @@
-import { useState, ReactNode, PropsWithoutRef } from "react"
-import { FormProvider, useForm, UseFormProps } from "react-hook-form"
+import React, { PropsWithoutRef, ReactNode, useState } from "react"
+
 import { zodResolver } from "@hookform/resolvers/zod"
+import { FormProvider, useForm, UseFormProps } from "react-hook-form"
 import { z } from "zod"
 
 export interface FormProps<S extends z.ZodType<any, any>>
@@ -14,21 +15,21 @@ export interface FormProps<S extends z.ZodType<any, any>>
   initialValues?: UseFormProps<z.infer<S>>["defaultValues"]
 }
 
-interface OnSubmitResult {
+export interface OnSubmitResult {
   FORM_ERROR?: string
   [prop: string]: any
 }
 
 export const FORM_ERROR = "FORM_ERROR"
 
-export function Form<S extends z.ZodType<any, any>>({
+const Form = <S extends z.ZodType<any, any>>({
   children,
   submitText,
   schema,
   initialValues,
   onSubmit,
   ...props
-}: FormProps<S>) {
+}: FormProps<S>): React.ReactElement => {
   const ctx = useForm<z.infer<S>>({
     mode: "onBlur",
     resolver: schema ? zodResolver(schema) : undefined,
@@ -41,6 +42,7 @@ export function Form<S extends z.ZodType<any, any>>({
       <form
         onSubmit={ctx.handleSubmit(async (values) => {
           const result = (await onSubmit(values)) || {}
+          // eslint-disable-next-line no-restricted-syntax
           for (const [key, value] of Object.entries(result)) {
             if (key === FORM_ERROR) {
               setFormError(value)

@@ -1,10 +1,11 @@
-import Layout from "app/core/layouts/Layout"
-import { LabeledTextField } from "app/core/components/LabeledTextField"
-import { Form, FORM_ERROR } from "app/core/components/Form"
-import { ForgotPassword } from "app/auth/validations"
-import forgotPassword from "app/auth/mutations/forgotPassword"
-import { useMutation } from "@blitzjs/rpc"
 import { BlitzPage } from "@blitzjs/next"
+import { useMutation } from "@blitzjs/rpc"
+
+import forgotPassword from "app/auth/mutations/forgotPassword"
+import { ForgotPassword } from "app/auth/validations"
+import Form, { FORM_ERROR, OnSubmitResult } from "app/core/components/Form"
+import { LabeledTextField } from "app/core/components/LabeledTextField"
+import Layout from "app/core/layouts/Layout"
 
 const ForgotPasswordPage: BlitzPage = () => {
   const [forgotPasswordMutation, { isSuccess }] = useMutation(forgotPassword)
@@ -26,7 +27,7 @@ const ForgotPasswordPage: BlitzPage = () => {
           submitText="Send Reset Password Instructions"
           schema={ForgotPassword}
           initialValues={{ email: "" }}
-          onSubmit={async (values) => {
+          onSubmit={async (values): Promise<OnSubmitResult | undefined> => {
             try {
               await forgotPasswordMutation(values)
             } catch (error: any) {

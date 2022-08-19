@@ -1,11 +1,15 @@
 import { SecurePassword } from "@blitzjs/auth"
 import { resolver } from "@blitzjs/rpc"
 import { AuthenticationError } from "blitz"
-import db from "db"
+import db, { User } from "db"
 import { Role } from "types"
+
 import { Login } from "../validations"
 
-export const authenticateUser = async (rawEmail: string, rawPassword: string) => {
+export const authenticateUser = async (
+  rawEmail: string,
+  rawPassword: string
+): Promise<Omit<User, "hashedPassword">> => {
   const { email, password } = Login.parse({ email: rawEmail, password: rawPassword })
   const user = await db.user.findFirst({ where: { email } })
   if (!user) throw new AuthenticationError()
@@ -19,6 +23,7 @@ export const authenticateUser = async (rawEmail: string, rawPassword: string) =>
   }
 
   const { hashedPassword, ...rest } = user
+
   return rest
 }
 

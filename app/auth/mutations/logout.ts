@@ -1,5 +1,7 @@
 import { Ctx } from "blitz"
 
-export default async function logout(_: any, ctx: Ctx) {
-  return await ctx.session.$revoke()
+const logout = async (_: any, ctx: Ctx): Promise<void> => {
+  return ctx.session.$revoke()
 }
+
+export default logout

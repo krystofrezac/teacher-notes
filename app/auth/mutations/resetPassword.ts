@@ -1,11 +1,14 @@
-import { SecurePassword, hash256 } from "@blitzjs/auth"
+import { hash256, SecurePassword } from "@blitzjs/auth"
 import { resolver } from "@blitzjs/rpc"
 import db from "db"
+
 import { ResetPassword } from "../validations"
+
 import login from "./login"
 
 export class ResetPasswordError extends Error {
   name = "ResetPasswordError"
+
   message = "Reset password link is invalid or it has expired."
 }
 

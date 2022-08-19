@@ -1,6 +1,7 @@
-import resetPassword from "./resetPassword"
+import { hash256, SecurePassword } from "@blitzjs/auth"
 import db from "db"
-import { SecurePassword, hash256 } from "@blitzjs/auth"
+
+import resetPassword from "./resetPassword"
 
 beforeEach(async () => {
   await db.$reset()

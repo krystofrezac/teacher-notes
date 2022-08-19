@@ -1,8 +1,9 @@
-import db from "db"
 import { hash256 } from "@blitzjs/auth"
-import forgotPassword from "./forgotPassword"
-import previewEmail from "preview-email"
 import { Ctx } from "@blitzjs/next"
+import db from "db"
+import previewEmail from "preview-email"
+
+import forgotPassword from "./forgotPassword"
 
 beforeEach(async () => {
   await db.$reset()
@@ -11,7 +12,7 @@ beforeEach(async () => {
 const generatedToken = "plain-token"
 jest.mock("@blitzjs/auth", () => ({
   ...jest.requireActual<Record<string, unknown>>("@blitzjs/auth")!,
-  generateToken: () => generatedToken,
+  generateToken: (): string => generatedToken,
 }))
 jest.mock("preview-email", () => jest.fn())
 
