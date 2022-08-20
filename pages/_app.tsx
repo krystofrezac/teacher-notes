@@ -5,6 +5,8 @@ import { AuthenticationError, AuthorizationError } from "blitz"
 
 import { withBlitz } from "app/blitz-client"
 
+import "app/core/styles/index.css"
+
 const RootErrorFallback = ({ error }: ErrorFallbackProps): React.ReactElement => {
   if (error instanceof AuthenticationError) {
     return <div>Error: You are not authenticated</div>
@@ -27,9 +29,11 @@ const RootErrorFallback = ({ error }: ErrorFallbackProps): React.ReactElement =>
 }
 
 const MyApp = ({ Component, pageProps }: AppProps): React.ReactElement => {
+  const getLayout = Component.getLayout || ((page): JSX.Element => page)
+
   return (
     <ErrorBoundary FallbackComponent={RootErrorFallback}>
-      <Component {...pageProps} />
+      {getLayout(<Component {...pageProps} />)}
     </ErrorBoundary>
   )
 }

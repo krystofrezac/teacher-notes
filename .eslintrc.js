@@ -76,5 +76,11 @@ module.exports = {
         "import/no-extraneous-dependencies": "off",
       },
     },
+    {
+      files: ["./pages/**/*.{ts,tsx}"],
+      rules: {
+        "no-restricted-exports": "off",
+      },
+    },
   ],
 }
