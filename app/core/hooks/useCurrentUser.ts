@@ -1,11 +1,15 @@
-import { useQuery } from "@blitzjs/rpc"
+import { useQuery } from '@blitzjs/rpc';
 
-import getCurrentUser, { CurrentUser } from "app/users/queries/getCurrentUser"
+import getCurrentUser, { CurrentUser } from 'app/users/queries/getCurrentUser';
 
-const useCurrentUser = (): CurrentUser | null => {
-  const [user] = useQuery(getCurrentUser, null)
+const useCurrentUser = (options?: {
+  suspense?: boolean;
+}): CurrentUser | undefined | null => {
+  const [user] = useQuery(getCurrentUser, null, {
+    suspense: options?.suspense ?? true,
+  });
 
-  return user
-}
+  return user;
+};
 
-export default useCurrentUser
+export default useCurrentUser;

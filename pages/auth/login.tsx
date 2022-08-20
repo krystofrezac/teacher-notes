@@ -1,23 +1,29 @@
-import { BlitzPage } from "@blitzjs/next"
-import { useRouter } from "next/router"
+import React from 'react';
 
-import { LoginForm } from "app/auth/components/LoginForm"
-import Layout from "app/core/layouts/Layout"
+import { BlitzPage } from '@blitzjs/auth';
+import { useRouter } from 'next/router';
+
+import LoginForm from 'app/auth/components/LoginForm';
+import DefaultLayout from 'app/core/layouts/Default';
 
 const LoginPage: BlitzPage = () => {
-  const router = useRouter()
+  const router = useRouter();
 
   return (
-    <Layout title="Log In">
-      <LoginForm
-        onSuccess={(_user): Promise<boolean> => {
-          const next = router.query.next ? decodeURIComponent(router.query.next as string) : "/"
+    <LoginForm
+      onSuccess={async (_user): Promise<void> => {
+        const next = router.query.next
+          ? decodeURIComponent(router.query.next as string)
+          : '/';
+        await router.push(next);
+      }}
+    />
+  );
+};
 
-          return router.push(next)
-        }}
-      />
-    </Layout>
-  )
-}
+LoginPage.redirectAuthenticatedTo = '/';
+LoginPage.getLayout = (page): React.ReactElement => (
+  <DefaultLayout title="Log In">{page}</DefaultLayout>
+);
 
-export default LoginPage
+export default LoginPage;

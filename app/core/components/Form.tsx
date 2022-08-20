@@ -1,85 +1,114 @@
-import React, { PropsWithoutRef, ReactNode, useState } from "react"
+import React, {
+  PropsWithoutRef,
+  ReactNode,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
 
-import { zodResolver } from "@hookform/resolvers/zod"
-import { FormProvider, useForm, UseFormProps } from "react-hook-form"
-import { z } from "zod"
+import { zodResolver } from '@hookform/resolvers/zod';
+import { FormProvider, useForm, UseFormProps } from 'react-hook-form';
+import { z } from 'zod';
 
-export interface FormProps<S extends z.ZodType<any, any>>
-  extends Omit<PropsWithoutRef<JSX.IntrinsicElements["form"]>, "onSubmit"> {
+import Alert from './Alert';
+
+interface OnSubmitResult {
+  FORM_ERROR?: string;
+  [prop: string]: any;
+}
+
+export type SubmitHandler<S extends z.ZodType<any, any>> = (
+  values: z.infer<S>,
+) => Promise<void | OnSubmitResult>;
+
+export type FormPropsDefaultS = z.ZodType<any, any>;
+export interface FormProps<S extends FormPropsDefaultS>
+  extends Omit<PropsWithoutRef<JSX.IntrinsicElements['form']>, 'onSubmit'> {
   /** All your form fields */
-  children?: ReactNode
+  children?: ReactNode;
   /** Text to display in the submit button */
-  submitText?: string
-  schema?: S
-  onSubmit: (values: z.infer<S>) => Promise<void | OnSubmitResult>
-  initialValues?: UseFormProps<z.infer<S>>["defaultValues"]
+  schema?: S;
+  initialValues?: UseFormProps<z.infer<S>>['defaultValues'];
+  submitResetTimeout?: number;
+  clearErrorsFunction?: React.MutableRefObject<() => void>;
+  onSubmit: SubmitHandler<S>;
 }
 
-export interface OnSubmitResult {
-  FORM_ERROR?: string
-  [prop: string]: any
-}
-
-export const FORM_ERROR = "FORM_ERROR"
+export const FORM_ERROR = 'FORM_ERROR';
 
 const Form = <S extends z.ZodType<any, any>>({
   children,
-  submitText,
   schema,
   initialValues,
+  submitResetTimeout,
+  clearErrorsFunction,
   onSubmit,
   ...props
 }: FormProps<S>): React.ReactElement => {
   const ctx = useForm<z.infer<S>>({
-    mode: "onBlur",
-    resolver: schema ? zodResolver(schema) : undefined,
+    mode: 'onBlur',
+    resolver: schema
+      ? zodResolver(schema, undefined, { mode: 'sync' })
+      : undefined,
     defaultValues: initialValues,
-  })
-  const [formError, setFormError] = useState<string | null>(null)
+  });
+  const [formError, setFormError] = useState<string | null>(null);
+
+  const clearErrors = useCallback((): void => {
+    setTimeout(() => {
+      ctx.clearErrors();
+    });
+  }, [ctx]);
+
+  const handleReset = useCallback(() => {
+    ctx.reset(initialValues);
+    clearErrors();
+  }, [ctx, initialValues, clearErrors]);
+
+  useEffect(() => {
+    handleReset();
+  }, [handleReset]);
+
+  useEffect(() => {
+    // eslint-disable-next-line no-param-reassign
+    if (clearErrorsFunction) clearErrorsFunction.current = clearErrors;
+  }, [clearErrors, clearErrorsFunction]);
 
   return (
     <FormProvider {...ctx}>
       <form
-        onSubmit={ctx.handleSubmit(async (values) => {
-          const result = (await onSubmit(values)) || {}
-          // eslint-disable-next-line no-restricted-syntax
-          for (const [key, value] of Object.entries(result)) {
+        onSubmit={ctx.handleSubmit(async values => {
+          const result = await onSubmit(values);
+          Object.entries(result ?? {}).forEach(([key, value]) => {
             if (key === FORM_ERROR) {
-              setFormError(value)
+              setFormError(value);
             } else {
               ctx.setError(key as any, {
-                type: "submit",
+                type: 'submit',
                 message: value,
-              })
+              });
             }
+          });
+
+          if (!result) {
+            setTimeout(() => {
+              handleReset();
+            }, submitResetTimeout);
           }
         })}
-        className="form"
         {...props}
       >
+        {formError && (
+          <Alert className="my-4" type="error">
+            {formError}
+          </Alert>
+        )}
+
         {/* Form fields supplied as children are rendered here */}
         {children}
-
-        {formError && (
-          <div role="alert" style={{ color: "red" }}>
-            {formError}
-          </div>
-        )}
-
-        {submitText && (
-          <button type="submit" disabled={ctx.formState.isSubmitting}>
-            {submitText}
-          </button>
-        )}
-
-        <style global jsx>{`
-          .form > * + * {
-            margin-top: 1rem;
-          }
-        `}</style>
       </form>
     </FormProvider>
-  )
-}
+  );
+};
 
-export default Form
+export default Form;

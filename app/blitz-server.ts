@@ -1,8 +1,12 @@
-import { AuthServerPlugin, PrismaStorage, simpleRolesIsAuthorized } from "@blitzjs/auth"
-import { setupBlitzServer } from "@blitzjs/next"
-import db from "db"
+import {
+  AuthServerPlugin,
+  PrismaStorage,
+  simpleRolesIsAuthorized,
+} from '@blitzjs/auth';
+import { setupBlitzServer } from '@blitzjs/next';
+import db from 'db';
 
-import { authConfig } from "./blitz-client"
+import { authConfig } from './blitz-client';
 
 export const { gSSP, gSP, api } = setupBlitzServer({
   plugins: [
@@ -12,4 +16,4 @@ export const { gSSP, gSP, api } = setupBlitzServer({
       isAuthorized: simpleRolesIsAuthorized,
     }),
   ],
-})
+});

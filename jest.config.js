@@ -1,11 +1,11 @@
-const nextJest = require("@blitzjs/next/jest")
+const nextJest = require('@blitzjs/next/jest');
 
 const createJestConfig = nextJest({
-  dir: "./",
-})
+  dir: './',
+});
 
 const customJestConfig = {
-  testEnvironment: "jest-environment-jsdom",
-}
+  testEnvironment: 'jest-environment-jsdom',
+};
 
-module.exports = createJestConfig(customJestConfig)
+module.exports = createJestConfig(customJestConfig);
