@@ -25,7 +25,7 @@ const HomePage: BlitzPage = () => {
 
 HomePage.suppressFirstRenderFlicker = true;
 HomePage.getLayout = (page): JSX.Element => (
-  <DefaultLayout title='Home' hideContentTitle>
+  <DefaultLayout title='Home' hideContentTitle goToAppButton>
     {page}
   </DefaultLayout>
 );
