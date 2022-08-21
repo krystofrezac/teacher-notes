@@ -40,6 +40,7 @@ const Button: React.FC<ButtonProps> = React.forwardRef((props, ref) => {
   const classes = [
     'relative',
     !simple && 'btn',
+    'flex gap-2',
     props.className,
     props.square && 'btn-square',
     !simple && getButtonSizeClass(props.size),

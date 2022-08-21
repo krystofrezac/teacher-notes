@@ -6,23 +6,27 @@ import {
   ChevronRightIcon,
   PencilIcon,
   PlusIcon,
+  TrashIcon,
 } from '@heroicons/react/outline';
 
 import Button from 'app/core/components/Button';
 import Card, { CardActions } from 'app/core/components/Card';
 import Icon from 'app/core/components/Icon';
 import DefaultLayout from 'app/core/layouts/Default';
+import StudentDeleteModal from 'app/students/components/StudentDeleteModal';
 import StudentForm from 'app/students/components/StudentForm';
 import { StudentFormSubmitHandler } from 'app/students/components/StudentForm.types';
 import createStudent from 'app/students/mutations/createStudent';
+import deleteStudent from 'app/students/mutations/deleteStudent';
 import updateStudent from 'app/students/mutations/updateStudent';
 import getStudents from 'app/students/queries/getStudents';
 
 const StudentsPage: BlitzPage = () => {
   const [state, setState] = useState({
     filter: '',
-    creatingCollection: false,
-    updatingCollectionId: undefined as number | undefined,
+    creatingStudent: false,
+    updatingStudentId: undefined as number | undefined,
+    deletingStudentId: undefined as number | undefined,
   });
 
   const splitFilter = state.filter.split(' ');
@@ -48,32 +52,43 @@ const StudentsPage: BlitzPage = () => {
   );
   const [createStudentMutation] = useMutation(createStudent);
   const [updateStudentMutation] = useMutation(updateStudent);
+  const [deleteStudentMutation] = useMutation(deleteStudent);
 
   const handleStudentFormSubmit: StudentFormSubmitHandler = async values => {
-    if (state.creatingCollection) await createStudentMutation(values);
-    else if (state.updatingCollectionId !== undefined)
+    if (state.creatingStudent) await createStudentMutation(values);
+    else if (state.updatingStudentId !== undefined)
       await updateStudentMutation({
-        id: state.updatingCollectionId,
+        id: state.updatingStudentId,
         ...values,
       });
 
     await refetch();
   };
-
   const handleStudentFormClose = (): void => {
     setState(prevState => ({
       ...prevState,
-      creatingCollection: false,
-      updatingCollectionId: undefined,
+      creatingStudent: false,
+      updatingStudentId: undefined,
     }));
   };
 
-  const handleCreateCollection = (): void => {
-    setState(prevState => ({ ...prevState, creatingCollection: true }));
+  const handleStudentDeleteModalSubmit = async (): Promise<void> => {
+    if (!state.deletingStudentId) return;
+    await deleteStudentMutation({ id: state.deletingStudentId });
+    await refetch();
+  };
+  const handleStudentDeleteModalCancel = (): void => {
+    setState(prevState => ({ ...prevState, deletingStudentId: undefined }));
   };
 
-  const handleUpdateCollection = (id: number): void => {
-    setState(prevState => ({ ...prevState, updatingCollectionId: id }));
+  const handleCreateStudent = (): void => {
+    setState(prevState => ({ ...prevState, creatingStudent: true }));
+  };
+  const handleUpdateStudent = (id: number): void => {
+    setState(prevState => ({ ...prevState, updatingStudentId: id }));
+  };
+  const handleDeleteStudent = (id: number): void => {
+    setState(prevState => ({ ...prevState, deletingStudentId: id }));
   };
 
   const handleFilterChange: ChangeEventHandler<HTMLInputElement> = e => {
@@ -81,24 +96,31 @@ const StudentsPage: BlitzPage = () => {
   };
 
   const getStudentFormActionText = (): string | undefined => {
-    if (state.creatingCollection) return 'Create';
-    if (state.updatingCollectionId !== undefined) return 'Update';
+    if (state.creatingStudent) return 'Create';
+    if (state.updatingStudentId !== undefined) return 'Update';
   };
 
-  const updatingCollection = data?.students.find(
-    student => student.id === state.updatingCollectionId,
+  const updatingStudent = data?.students.find(
+    student => student.id === state.updatingStudentId,
+  );
+  const deletingStudent = data?.students.find(
+    student => student.id === state.deletingStudentId,
   );
 
   return (
     <>
       <StudentForm
-        open={
-          state.creatingCollection || state.updatingCollectionId !== undefined
-        }
-        initialValues={updatingCollection}
+        open={state.creatingStudent || state.updatingStudentId !== undefined}
+        initialValues={updatingStudent}
         actionText={getStudentFormActionText()}
         onSubmit={handleStudentFormSubmit}
         onClose={handleStudentFormClose}
+      />
+      <StudentDeleteModal
+        open={state.deletingStudentId !== undefined}
+        studentName={`${deletingStudent?.firstName} ${deletingStudent?.lastName}`}
+        onSubmit={handleStudentDeleteModalSubmit}
+        onClose={handleStudentDeleteModalCancel}
       />
 
       <Card loading={isLoading}>
@@ -113,13 +135,14 @@ const StudentsPage: BlitzPage = () => {
             variant='primary'
             size='sm'
             square
-            onClick={handleCreateCollection}
+            onClick={handleCreateStudent}
           >
             <Icon size='sm'>
               <PlusIcon />
             </Icon>
           </Button>
         </CardActions>
+
         {isSuccess && data?.count === 0 && "You don't have any students."}
         <table className='table'>
           <tbody>
@@ -134,7 +157,17 @@ const StudentsPage: BlitzPage = () => {
                       size='xs'
                       variant='ghost'
                       square
-                      onClick={(): void => handleUpdateCollection(student.id)}
+                      onClick={(): void => handleDeleteStudent(student.id)}
+                    >
+                      <Icon size='xs' variant='error'>
+                        <TrashIcon />
+                      </Icon>
+                    </Button>
+                    <Button
+                      size='xs'
+                      variant='ghost'
+                      square
+                      onClick={(): void => handleUpdateStudent(student.id)}
                     >
                       <Icon size='xs'>
                         <PencilIcon />
