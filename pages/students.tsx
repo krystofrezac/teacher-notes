@@ -11,7 +11,9 @@ import {
 
 import Button from 'app/core/components/Button';
 import Card, { CardActions } from 'app/core/components/Card';
+import Flex from 'app/core/components/Flex';
 import Icon from 'app/core/components/Icon';
+import Spacer from 'app/core/components/Spacer';
 import DefaultLayout from 'app/core/layouts/Default';
 import StudentDeleteModal from 'app/students/components/StudentDeleteModal';
 import StudentForm from 'app/students/components/StudentForm';
@@ -123,27 +125,33 @@ const StudentsPage: BlitzPage = () => {
         onClose={handleStudentDeleteModalCancel}
       />
 
-      <Card loading={isLoading}>
-        <CardActions>
-          <input
-            className='input input-bordered input-sm input-ghost grow mr-2'
-            placeholder='Filter'
-            value={state.filter}
-            onChange={handleFilterChange}
-          />
-          <Button
-            variant='primary'
-            size='sm'
-            square
-            onClick={handleCreateStudent}
-          >
-            <Icon size='sm'>
-              <PlusIcon />
-            </Icon>
-          </Button>
-        </CardActions>
+      <Card loading={isLoading} noPadding>
+        <Spacer all='1' bottom='0'>
+          <CardActions>
+            <input
+              className='input input-bordered input-sm input-ghost grow'
+              placeholder='Filter'
+              value={state.filter}
+              onChange={handleFilterChange}
+            />
+            <Button
+              variant='primary'
+              size='sm'
+              square
+              onClick={handleCreateStudent}
+            >
+              <Icon size='sm'>
+                <PlusIcon />
+              </Icon>
+            </Button>
+          </CardActions>
+        </Spacer>
 
-        {isSuccess && data?.count === 0 && "You don't have any students."}
+        {isSuccess && data?.count === 0 && (
+          <Flex horizontal='center' fullWidth>
+            <Spacer top='1'>{`You don't have any students.`}</Spacer>
+          </Flex>
+        )}
         <table className='table'>
           <tbody>
             {data?.students.map(student => (
@@ -152,7 +160,7 @@ const StudentsPage: BlitzPage = () => {
                   {student.firstName} {student.lastName}
                 </td>
                 <td>
-                  <div className='flex gap-2 justify-end'>
+                  <Flex gap='1/2' horizontal='end'>
                     <Button
                       size='xs'
                       variant='ghost'
@@ -178,7 +186,7 @@ const StudentsPage: BlitzPage = () => {
                         <ChevronRightIcon />
                       </Icon>
                     </Button>
-                  </div>
+                  </Flex>
                 </td>
               </tr>
             ))}
