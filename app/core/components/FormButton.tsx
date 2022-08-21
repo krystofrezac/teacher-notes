@@ -8,7 +8,7 @@ const FormButton: React.FC<Omit<ButtonProps, 'loading'>> = props => {
     formState: { isSubmitting },
   } = useFormContext();
 
-  return <Button {...props} loading={isSubmitting} />;
+  return <Button type='button' {...props} loading={isSubmitting} />;
 };
 
 export default FormButton;

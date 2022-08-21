@@ -1,6 +1,6 @@
 import React from 'react';
 
-export type IconSize = 'sm' | 'md' | 'lg';
+export type IconSize = 'xs' | 'sm' | 'md' | 'lg';
 export type IconVariant = 'default' | 'error';
 
 export interface IconProps {

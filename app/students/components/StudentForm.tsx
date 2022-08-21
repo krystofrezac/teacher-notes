@@ -5,12 +5,15 @@ import FormButton from 'app/core/components/FormButton';
 import Modal, { ModalActions, ModalTitle } from 'app/core/components/Modal';
 import ModalForm from 'app/core/components/ModalForm';
 import TextInput from 'app/core/components/TextInput';
+import useDefinedValue from 'app/core/hooks/useDefinedValue';
 
 import Student from '../validations/students';
 
 import { StudentFormProps } from './StudentForm.types';
 
 const StudentForm: FC<StudentFormProps> = props => {
+  const actionText = useDefinedValue(props.actionText);
+
   const handleSubmit: SubmitHandler<typeof Student> = async values => {
     try {
       await props.onSubmit(values);
@@ -24,8 +27,13 @@ const StudentForm: FC<StudentFormProps> = props => {
 
   return (
     <Modal open={props.open}>
-      <ModalTitle>Create student</ModalTitle>
-      <ModalForm open={props.open} schema={Student} onSubmit={handleSubmit}>
+      <ModalTitle>{actionText} student</ModalTitle>
+      <ModalForm
+        open={props.open}
+        schema={Student}
+        initialValues={props.initialValues ?? { firstName: '', lastName: '' }}
+        onSubmit={handleSubmit}
+      >
         <TextInput name='firstName' label='First name' />
         <TextInput name='lastName' label='Last name' />
 
@@ -34,7 +42,7 @@ const StudentForm: FC<StudentFormProps> = props => {
             Cancel
           </FormButton>
           <FormButton type='submit' variant='primary'>
-            Create
+            {actionText}
           </FormButton>
         </ModalActions>
       </ModalForm>

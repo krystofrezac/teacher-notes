@@ -9,6 +9,8 @@ export type StudentFormSubmitHandler = (
 
 export interface StudentFormProps {
   open: boolean;
+  initialValues?: StudentFormValues;
+  actionText?: string;
 
   onSubmit: StudentFormSubmitHandler;
   onClose: () => void;
