@@ -23,7 +23,7 @@ model User {
 
   tokens   Token[]
   sessions Session[]
-  Student  Student[]
+  students Student[]
 }
 
 model Session {
@@ -74,4 +74,16 @@ model Student {
 
   user   User @relation(fields: [userId], references: [id])
   userId Int
+
+  lessons Lesson[]
+}
+
+model Lesson {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  date      DateTime @db.Date
+
+  student   Student @relation(fields: [studentId], references: [id])
+  studentId Int
 }
