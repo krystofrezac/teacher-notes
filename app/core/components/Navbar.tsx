@@ -25,14 +25,14 @@ const UserAvatar: React.FC = () => {
 
   if (!user || !isUserSuccess)
     return (
-      <div className="flex gap-2">
+      <div className='flex gap-2'>
         <Link href={Routes.RegisterPage()}>
-          <Button element="a" size="sm">
+          <Button element='a' size='sm'>
             Register
           </Button>
         </Link>
         <Link href={Routes.LoginPage()}>
-          <Button element="a" variant="primary" size="sm">
+          <Button element='a' variant='primary' size='sm'>
             Login
           </Button>
         </Link>
@@ -45,7 +45,7 @@ const UserAvatar: React.FC = () => {
         <ModalTitle>Do you really want to logout?</ModalTitle>
         <ModalActions>
           <Button
-            variant="ghost"
+            variant='ghost'
             onClick={(): void => {
               setLogoutDialog(false);
             }}
@@ -53,7 +53,7 @@ const UserAvatar: React.FC = () => {
             No
           </Button>
           <Button
-            variant="error"
+            variant='error'
             onClick={async (): Promise<void> => {
               await logoutMutation();
               await router.push(Routes.HomePage());
@@ -63,7 +63,11 @@ const UserAvatar: React.FC = () => {
           </Button>
         </ModalActions>
       </Modal>
-
+      <Link href={Routes.StudentsPage()}>
+        <Button variant='primary' size='sm' className='mr-6'>
+          Go to app
+        </Button>
+      </Link>
       <Dropdown
         end
         trigger={
@@ -73,8 +77,8 @@ const UserAvatar: React.FC = () => {
         }
         options={[
           <Button
-            key="logout"
-            className="flex items-center text-error"
+            key='logout'
+            className='flex items-center text-error'
             simple
             onClick={(): void => {
               setLogoutDialog(true);
@@ -93,19 +97,19 @@ const UserAvatar: React.FC = () => {
 
 const Navbar: React.FC = () => {
   return (
-    <div className="navbar bg-neutral shadow-xl rounded-box">
-      <div className="navbar-start">
+    <div className='navbar bg-neutral shadow-xl rounded-box'>
+      <div className='navbar-start'>
         <Link href={Routes.HomePage()}>
           <Button
-            className="normal-case text-white text-xl"
-            element="a"
-            variant="ghost"
+            className='normal-case text-white text-xl'
+            element='a'
+            variant='ghost'
           >
             Flashcards
           </Button>
         </Link>
       </div>
-      <div className="navbar-end pr-4">
+      <div className='navbar-end pr-4'>
         <UserAvatar />
       </div>
     </div>

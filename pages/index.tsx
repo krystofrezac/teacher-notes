@@ -7,14 +7,14 @@ import DefaultLayout from 'app/core/layouts/Default';
 
 const HomePage: BlitzPage = () => {
   return (
-    <Hero className="mt-40">
+    <Hero className='mt-40'>
       <HeroTitle>Still in development</HeroTitle>
       <HeroContent>
         Not everything looks stunning right now, but hopefully it is fully
         functional.
       </HeroContent>
-      <Link href="/">
-        <Button variant="primary">Try it</Button>
+      <Link href='/'>
+        <Button variant='primary'>Try it</Button>
       </Link>
     </Hero>
   );
@@ -22,7 +22,7 @@ const HomePage: BlitzPage = () => {
 
 HomePage.suppressFirstRenderFlicker = true;
 HomePage.getLayout = (page): JSX.Element => (
-  <DefaultLayout title="Home" hideContentTitle>
+  <DefaultLayout title='Home' hideContentTitle>
     {page}
   </DefaultLayout>
 );

@@ -21,7 +21,7 @@ const RegisterPage: BlitzPage = () => {
 
 RegisterPage.redirectAuthenticatedTo = Routes.HomePage();
 RegisterPage.getLayout = (page): React.ReactElement => (
-  <DefaultLayout title="Register">{page}</DefaultLayout>
+  <DefaultLayout title='Register'>{page}</DefaultLayout>
 );
 
 export default RegisterPage;

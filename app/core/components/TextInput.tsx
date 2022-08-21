@@ -25,9 +25,9 @@ const TextInput: React.FC<TextInputProps> = props => {
   }, [tempErrorMessage]);
 
   return (
-    <div className="form-control w-full">
-      <label className="label">
-        <span className="label-text first-letter:capitalize">
+    <div className='form-control w-full'>
+      <label className='label'>
+        <span className='label-text first-letter:capitalize'>
           {props.label}
         </span>
       </label>
@@ -39,7 +39,7 @@ const TextInput: React.FC<TextInputProps> = props => {
         disabled={isSubmitting}
         {...register(props.name)}
       />
-      <label className="label">
+      <label className='label'>
         <span
           className={`label-text-alt text-error first-letter:capitalize transition-opacity opacity-0 ${
             error.show ? 'opacity-100' : ''

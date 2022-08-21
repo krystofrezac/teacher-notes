@@ -23,7 +23,7 @@ const LoginPage: BlitzPage = () => {
 
 LoginPage.redirectAuthenticatedTo = '/';
 LoginPage.getLayout = (page): React.ReactElement => (
-  <DefaultLayout title="Log In">{page}</DefaultLayout>
+  <DefaultLayout title='Log In'>{page}</DefaultLayout>
 );
 
 export default LoginPage;
