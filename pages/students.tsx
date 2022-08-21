@@ -1,4 +1,4 @@
-import { ReactElement, useState } from 'react';
+import { ChangeEventHandler, ReactElement, useState } from 'react';
 
 import { BlitzPage } from '@blitzjs/auth';
 import { useMutation, useQuery } from '@blitzjs/rpc';
@@ -14,10 +14,25 @@ import createStudent from 'app/students/mutations/createStudent';
 import getStudents from 'app/students/queries/getStudents';
 
 const StudentsPage: BlitzPage = () => {
-  const [state, setState] = useState({ creatingCollection: false });
+  const [state, setState] = useState({ creatingCollection: false, filter: '' });
+
+  const splitFilter = state.filter.split(' ');
   const [data, { isLoading, isSuccess, refetch }] = useQuery(
     getStudents,
-    {},
+    {
+      where: {
+        OR: [
+          {
+            firstName: { contains: state.filter },
+          },
+          { lastName: { contains: state.filter } },
+          { firstName: { contains: splitFilter[0] } },
+          (splitFilter[1]?.length ?? 0) > 0
+            ? { lastName: { contains: splitFilter[1] } }
+            : {},
+        ],
+      },
+    },
     {
       suspense: false,
     },
@@ -37,6 +52,10 @@ const StudentsPage: BlitzPage = () => {
     setState(prevState => ({ ...prevState, creatingCollection: true }));
   };
 
+  const handleFilterChange: ChangeEventHandler<HTMLInputElement> = e => {
+    setState(prevState => ({ ...prevState, filter: e.target.value }));
+  };
+
   return (
     <>
       <StudentForm
@@ -47,6 +66,12 @@ const StudentsPage: BlitzPage = () => {
 
       <Card loading={isLoading}>
         <CardActions>
+          <input
+            className='input input-bordered input-sm input-ghost grow mr-2'
+            placeholder='Filter'
+            value={state.filter}
+            onChange={handleFilterChange}
+          />
           <Button
             variant='primary'
             size='sm'
