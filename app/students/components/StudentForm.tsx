@@ -11,6 +11,8 @@ import Student from '../validations/students';
 
 import { StudentFormProps } from './StudentForm.types';
 
+const defaultInitialValues = { firstName: '', lastName: '' };
+
 const StudentForm: FC<StudentFormProps> = props => {
   const actionText = useDefinedValue(props.actionText);
 
@@ -31,7 +33,7 @@ const StudentForm: FC<StudentFormProps> = props => {
       <ModalForm
         open={props.open}
         schema={Student}
-        initialValues={props.initialValues ?? { firstName: '', lastName: '' }}
+        initialValues={props.initialValues ?? defaultInitialValues}
         onSubmit={handleSubmit}
       >
         <TextInput name='firstName' label='First name' />
