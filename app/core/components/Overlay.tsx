@@ -19,7 +19,7 @@ const Overlay: React.FC<OverlayProps> = props => {
 
   return (
     <div
-      className={`absolute top-0 left-0 w-full h-full flex justify-center items-center bg-gray-900 bg-opacity-30 transition ${
+      className={`absolute top-0 left-0 w-full h-full flex justify-center items-center z-50 bg-gray-900 bg-opacity-30 transition ${
         !props.open ? 'bg-opacity-0' : ''
       } ${!visible ? 'invisible' : ''}`}
     >

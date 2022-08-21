@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 
 import { TrashIcon } from '@heroicons/react/outline';
 
@@ -9,9 +9,13 @@ import Modal, { ModalActions, ModalTitle } from 'app/core/components/Modal';
 import { StudentDeleteModalProps } from './StudentDeleteModal.types';
 
 const StudentDeleteModal: FC<StudentDeleteModalProps> = props => {
+  const [loading, setLoading] = useState(false);
+
   const handleSubmit = async (): Promise<void> => {
+    setLoading(true);
     await props.onSubmit();
     props.onClose();
+    setLoading(false);
   };
 
   return (
@@ -21,10 +25,10 @@ const StudentDeleteModal: FC<StudentDeleteModalProps> = props => {
       </ModalTitle>
       This action is irreversible
       <ModalActions>
-        <Button variant='ghost' onClick={props.onClose}>
+        <Button variant='ghost' loading={loading} onClick={props.onClose}>
           Cancel
         </Button>
-        <Button variant='error' onClick={handleSubmit}>
+        <Button variant='error' loading={loading} onClick={handleSubmit}>
           <Icon>
             <TrashIcon />
           </Icon>
