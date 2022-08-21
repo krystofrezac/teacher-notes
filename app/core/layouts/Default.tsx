@@ -8,6 +8,7 @@ const DefaultLayout: BlitzLayout<{
   title: string;
   hideContentTitle?: boolean;
   children?: React.ReactNode;
+  goToAppButton?: boolean;
 }> = props => {
   return (
     <div className=''>
@@ -19,7 +20,7 @@ const DefaultLayout: BlitzLayout<{
         <div className='sticky top-0 z-20'>
           <div className='bg-base-200'>
             <Spacer all='1/2' bottom='0'>
-              <Navbar />
+              <Navbar goToAppButton={props.goToAppButton} />
               {!props.hideContentTitle && (
                 <Spacer all='1/2'>
                   <h1 className='text-xl'>{props.title}</h1>

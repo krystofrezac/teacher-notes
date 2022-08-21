@@ -17,7 +17,15 @@ import Icon from './Icon';
 import Modal, { ModalActions, ModalTitle } from './Modal';
 import Spacer from './Spacer';
 
-const UserAvatar: React.FC = () => {
+export interface NavbarProps {
+  goToAppButton?: boolean;
+}
+
+export interface UserAvatarProps {
+  goToAppButton?: boolean;
+}
+
+const UserAvatar: React.FC<UserAvatarProps> = props => {
   const [logoutDialog, setLogoutDialog] = useState(false);
   const [user, { isSuccess: isUserSuccess }] = useQuery(getCurrentUser, null, {
     suspense: false,
@@ -66,11 +74,13 @@ const UserAvatar: React.FC = () => {
         </ModalActions>
       </Modal>
       <Flex gap='1'>
-        <Link href={Routes.StudentsPage()}>
-          <Button variant='primary' size='sm'>
-            Go to app
-          </Button>
-        </Link>
+        {props.goToAppButton && (
+          <Link href={Routes.StudentsPage()}>
+            <Button variant='primary' size='sm'>
+              Go to app
+            </Button>
+          </Link>
+        )}
         <Dropdown
           end
           trigger={
@@ -99,7 +109,7 @@ const UserAvatar: React.FC = () => {
   );
 };
 
-const Navbar: React.FC = () => {
+const Navbar: React.FC<NavbarProps> = props => {
   return (
     <div className='navbar bg-neutral shadow-xl rounded-box'>
       <div className='grow'>
@@ -114,7 +124,7 @@ const Navbar: React.FC = () => {
         </Link>
       </div>
       <Spacer right='1'>
-        <UserAvatar />
+        <UserAvatar goToAppButton={props.goToAppButton} />
       </Spacer>
     </div>
   );
