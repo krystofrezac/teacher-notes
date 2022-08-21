@@ -25,7 +25,7 @@ const Card: React.FC<CardProps> = props => (
     )}`}
   >
     <OverlayContainer>
-      <div className={`card-body ${props.noPadding ? 'p-0' : ''}`}>
+      <div className={`card-body ${props.noPadding ? 'p-0' : 'p-4'}`}>
         {props.children}
         <Overlay open={!!props.loading}>
           <Spinner hidden={!props.loading} size='lg' />

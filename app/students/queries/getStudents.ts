@@ -9,8 +9,8 @@ interface GetStudentsInput
   > {}
 
 export default resolver.pipe(
-  resolver.authorize(),
-  async ({ where, orderBy, skip = 0, take = 100 }: GetStudentsInput, ctx) => {
+  resolver.authorize<GetStudentsInput>(),
+  async ({ where, orderBy, skip = 0, take = 100 }, ctx) => {
     const whereWithUser = { ...where, userId: ctx.session.userId };
 
     const {
