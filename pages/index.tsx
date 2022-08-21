@@ -2,6 +2,7 @@ import { BlitzPage } from '@blitzjs/next';
 import Link from 'next/link';
 
 import Button from 'app/core/components/Button';
+import Flex from 'app/core/components/Flex';
 import Hero, { HeroContent, HeroTitle } from 'app/core/components/Hero';
 import DefaultLayout from 'app/core/layouts/Default';
 
@@ -13,9 +14,11 @@ const HomePage: BlitzPage = () => {
         Not everything looks stunning right now, but hopefully it is fully
         functional.
       </HeroContent>
-      <Link href='/'>
-        <Button variant='primary'>Try it</Button>
-      </Link>
+      <Flex direction='row' horizontal='center'>
+        <Link href='/'>
+          <Button variant='primary'>Try it</Button>
+        </Link>
+      </Flex>
     </Hero>
   );
 };

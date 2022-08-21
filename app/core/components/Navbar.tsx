@@ -12,8 +12,10 @@ import getCurrentUser from 'app/users/queries/getCurrentUser';
 import Avatar from './Avatar';
 import Button from './Button';
 import Dropdown from './Dropdown';
+import Flex from './Flex';
 import Icon from './Icon';
 import Modal, { ModalActions, ModalTitle } from './Modal';
+import Spacer from './Spacer';
 
 const UserAvatar: React.FC = () => {
   const [logoutDialog, setLogoutDialog] = useState(false);
@@ -25,7 +27,7 @@ const UserAvatar: React.FC = () => {
 
   if (!user || !isUserSuccess)
     return (
-      <div className='flex gap-2'>
+      <Flex gap='1/2'>
         <Link href={Routes.RegisterPage()}>
           <Button element='a' size='sm'>
             Register
@@ -36,7 +38,7 @@ const UserAvatar: React.FC = () => {
             Login
           </Button>
         </Link>
-      </div>
+      </Flex>
     );
 
   return (
@@ -63,34 +65,36 @@ const UserAvatar: React.FC = () => {
           </Button>
         </ModalActions>
       </Modal>
-      <Link href={Routes.StudentsPage()}>
-        <Button variant='primary' size='sm' className='mr-6'>
-          Go to app
-        </Button>
-      </Link>
-      <Dropdown
-        end
-        trigger={
-          <Button simple>
-            <Avatar>{user.email[0]?.toUpperCase()}</Avatar>
+      <Flex gap='1'>
+        <Link href={Routes.StudentsPage()}>
+          <Button variant='primary' size='sm'>
+            Go to app
           </Button>
-        }
-        options={[
-          <Button
-            key='logout'
-            className='flex items-center text-error'
-            simple
-            onClick={(): void => {
-              setLogoutDialog(true);
-            }}
-          >
-            <Icon>
-              <LogoutIcon />
-            </Icon>
-            Logout
-          </Button>,
-        ]}
-      />
+        </Link>
+        <Dropdown
+          end
+          trigger={
+            <Button simple>
+              <Avatar>{user.email[0]?.toUpperCase()}</Avatar>
+            </Button>
+          }
+          options={[
+            <Button
+              key='logout'
+              className='flex items-center text-error'
+              simple
+              onClick={(): void => {
+                setLogoutDialog(true);
+              }}
+            >
+              <Icon>
+                <LogoutIcon />
+              </Icon>
+              Logout
+            </Button>,
+          ]}
+        />
+      </Flex>
     </>
   );
 };
@@ -98,7 +102,7 @@ const UserAvatar: React.FC = () => {
 const Navbar: React.FC = () => {
   return (
     <div className='navbar bg-neutral shadow-xl rounded-box'>
-      <div className='navbar-start'>
+      <div className='grow'>
         <Link href={Routes.HomePage()}>
           <Button
             className='normal-case text-white text-xl'
@@ -109,9 +113,9 @@ const Navbar: React.FC = () => {
           </Button>
         </Link>
       </div>
-      <div className='navbar-end pr-4'>
+      <Spacer right='1'>
         <UserAvatar />
-      </div>
+      </Spacer>
     </div>
   );
 };

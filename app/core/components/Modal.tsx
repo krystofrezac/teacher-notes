@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
+import { useTheme } from '../theme';
+
 import { ModalActionsProps, ModalProps, ModalTileProps } from './Modal.types';
 
 export const MODAL_TRANSITION_DURATION = 200;
@@ -34,8 +36,14 @@ export const ModalTitle: React.FC<ModalTileProps> = props => (
   <h3 className='font-bold text-lg pb-4'>{props.children}</h3>
 );
 
-export const ModalActions: React.FC<ModalActionsProps> = props => (
-  <div className='modal-action'>{props.children}</div>
-);
+export const ModalActions: React.FC<ModalActionsProps> = props => {
+  const theme = useTheme();
+
+  return (
+    <div className='modal-action' style={{ gap: theme.spacing[1] }}>
+      {props.children}
+    </div>
+  );
+};
 
 export default Modal;
