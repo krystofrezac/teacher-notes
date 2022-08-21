@@ -13,7 +13,7 @@ const Dropdown: React.FC<DropdownProps> = props => {
   return (
     <div className={`dropdown ${classes}`}>
       {props.trigger}
-      <ul className="dropdown-content menu p-2 shadow-lg bg-base-100 rounded-box w-52 border">
+      <ul className='dropdown-content menu p-2 shadow-lg bg-base-100 rounded-box w-52 border'>
         {props.options.map(option => (
           <li key={option.key}>{option}</li>
         ))}

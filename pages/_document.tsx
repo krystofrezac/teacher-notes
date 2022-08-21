@@ -10,7 +10,7 @@ class MyDocument extends Document {
   // }
   render(): React.ReactElement {
     return (
-      <Html lang="en" className="bg-base-200">
+      <Html lang='en' className='bg-base-200'>
         <Head />
         <body>
           <Main />

@@ -29,7 +29,7 @@ const Overlay: React.FC<OverlayProps> = props => {
 };
 
 export const OverlayContainer: React.FC<OverlayContainerProps> = props => (
-  <div className="w-full h-full relative">{props.children}</div>
+  <div className='w-full h-full relative'>{props.children}</div>
 );
 
 export default Overlay;

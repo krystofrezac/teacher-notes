@@ -25,17 +25,17 @@ const Modal: React.FC<ModalProps> = props => {
         props.open ? 'modal-open' : ''
       } ${visible ? 'visible' : ''}`}
     >
-      <div className="modal-box">{props.children}</div>
+      <div className='modal-box'>{props.children}</div>
     </div>
   );
 };
 
 export const ModalTitle: React.FC<ModalTileProps> = props => (
-  <h3 className="font-bold text-lg pb-4">{props.children}</h3>
+  <h3 className='font-bold text-lg pb-4'>{props.children}</h3>
 );
 
 export const ModalActions: React.FC<ModalActionsProps> = props => (
-  <div className="modal-action">{props.children}</div>
+  <div className='modal-action'>{props.children}</div>
 );
 
 export default Modal;

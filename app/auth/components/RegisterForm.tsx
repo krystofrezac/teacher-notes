@@ -19,8 +19,8 @@ export const RegisterForm: React.FC<RegisterFormProps> = props => {
   const [registerMutation] = useMutation(register);
 
   return (
-    <div className="flex justify-center mt-20">
-      <Card width="md">
+    <div className='flex justify-center mt-20'>
+      <Card width='md'>
         <CardTitle>Create an account</CardTitle>
 
         <Form
@@ -42,17 +42,17 @@ export const RegisterForm: React.FC<RegisterFormProps> = props => {
             }
           }}
         >
-          <TextInput name="email" label="Email" />
-          <TextInput name="password" label="Password" type="password" />
+          <TextInput name='email' label='Email' />
+          <TextInput name='password' label='Password' type='password' />
 
           <CardActions>
-            <FormButton type="submit" variant="primary">
+            <FormButton type='submit' variant='primary'>
               Register
             </FormButton>
           </CardActions>
         </Form>
 
-        <div className="flex gap-4 pt-5 justify-center">
+        <div className='flex gap-4 pt-5 justify-center'>
           <Link href={Routes.LoginPage()}>Already have an account?</Link>
         </div>
       </Card>

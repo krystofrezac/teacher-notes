@@ -99,7 +99,7 @@ const Form = <S extends z.ZodType<any, any>>({
         {...props}
       >
         {formError && (
-          <Alert className="my-4" type="error">
+          <Alert className='my-4' type='error'>
             {formError}
           </Alert>
         )}

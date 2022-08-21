@@ -15,13 +15,13 @@ const ForgotPasswordPage: BlitzPage = () => {
   const [forgotPasswordMutation, { isSuccess }] = useMutation(forgotPassword);
 
   return (
-    <div className="flex justify-center mt-20">
-      <Card width="md">
+    <div className='flex justify-center mt-20'>
+      <Card width='md'>
         <CardTitle>Forgot your password?</CardTitle>
 
         {isSuccess ? (
           <div>
-            <h2 className="font-bold pt-4 pb-2">Request Submitted</h2>
+            <h2 className='font-bold pt-4 pb-2'>Request Submitted</h2>
             <p>
               If your email is in our system, you will receive instructions to
               reset your password shortly.
@@ -44,10 +44,10 @@ const ForgotPasswordPage: BlitzPage = () => {
               }
             }}
           >
-            <TextInput name="email" label="Email" />
+            <TextInput name='email' label='Email' />
 
             <CardActions>
-              <FormButton type="submit" variant="primary">
+              <FormButton type='submit' variant='primary'>
                 Send reset password instructions
               </FormButton>
             </CardActions>
@@ -60,7 +60,7 @@ const ForgotPasswordPage: BlitzPage = () => {
 
 ForgotPasswordPage.redirectAuthenticatedTo = '/';
 ForgotPasswordPage.getLayout = (page): React.ReactElement => (
-  <DefaultLayout title="Forgot Your Password?">{page}</DefaultLayout>
+  <DefaultLayout title='Forgot Your Password?'>{page}</DefaultLayout>
 );
 
 export default ForgotPasswordPage;

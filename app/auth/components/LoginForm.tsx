@@ -35,22 +35,22 @@ const LoginForm: React.FC<LoginFormProps> = props => {
   };
 
   return (
-    <div className="flex justify-center mt-20">
-      <Card width="md">
+    <div className='flex justify-center mt-20'>
+      <Card width='md'>
         <CardTitle>Login</CardTitle>
 
         <Form schema={Login} onSubmit={handleSubmit}>
-          <TextInput name="email" label="Email" />
-          <TextInput name="password" label="Password" type="password" />
+          <TextInput name='email' label='Email' />
+          <TextInput name='password' label='Password' type='password' />
 
           <CardActions>
-            <FormButton type="submit" variant="primary">
+            <FormButton type='submit' variant='primary'>
               Login
             </FormButton>
           </CardActions>
         </Form>
 
-        <div className="flex gap-4 pt-5 justify-center">
+        <div className='flex gap-4 pt-5 justify-center'>
           <Link href={Routes.ForgotPasswordPage()}>Forgot your password?</Link>•
           <Link href={Routes.RegisterPage()}>Register</Link>
         </div>

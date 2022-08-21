@@ -18,13 +18,13 @@ const ResetPasswordPage: BlitzPage = () => {
   const [resetPasswordMutation, { isSuccess }] = useMutation(resetPassword);
 
   return (
-    <div className="flex justify-center mt-20">
-      <Card width="md">
+    <div className='flex justify-center mt-20'>
+      <Card width='md'>
         <CardTitle>Set a New Password</CardTitle>
 
         {isSuccess ? (
           <div>
-            <h2 className="font-bold pt-4 pb-2">Password Reset Successfully</h2>
+            <h2 className='font-bold pt-4 pb-2'>Password Reset Successfully</h2>
             <p>
               You can now <Link href={Routes.HomePage()}>login</Link>
             </p>
@@ -56,15 +56,15 @@ const ResetPasswordPage: BlitzPage = () => {
               }
             }}
           >
-            <TextInput name="password" label="New Password" type="password" />
+            <TextInput name='password' label='New Password' type='password' />
             <TextInput
-              name="passwordConfirmation"
-              label="Confirm New Password"
-              type="password"
+              name='passwordConfirmation'
+              label='Confirm New Password'
+              type='password'
             />
 
             <CardActions>
-              <FormButton type="submit" variant="primary">
+              <FormButton type='submit' variant='primary'>
                 Register
               </FormButton>
             </CardActions>
@@ -77,7 +77,7 @@ const ResetPasswordPage: BlitzPage = () => {
 
 ResetPasswordPage.redirectAuthenticatedTo = '/';
 ResetPasswordPage.getLayout = (page): React.ReactElement => (
-  <DefaultLayout title="Reset Your Password">{page}</DefaultLayout>
+  <DefaultLayout title='Reset Your Password'>{page}</DefaultLayout>
 );
 
 export default ResetPasswordPage;

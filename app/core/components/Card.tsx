@@ -25,10 +25,10 @@ const Card: React.FC<CardProps> = props => (
     )}`}
   >
     <OverlayContainer>
-      <div className={`card-body ${props.noPadding ? 'p-0' : ''}`}>
+      <div className={`card-body ${props.noPadding ? 'p-0' : 'p-4'}`}>
         {props.children}
         <Overlay open={!!props.loading}>
-          <Spinner hidden={!props.loading} size="lg" />
+          <Spinner hidden={!props.loading} size='lg' />
         </Overlay>
       </div>
     </OverlayContainer>
@@ -36,7 +36,7 @@ const Card: React.FC<CardProps> = props => (
 );
 
 export const CardTitle: React.FC<CardTitleProps> = props => (
-  <h2 className="card-title">{props.children}</h2>
+  <h2 className='card-title'>{props.children}</h2>
 );
 
 export const CardActions: React.FC<CardActionsProps> = props => (

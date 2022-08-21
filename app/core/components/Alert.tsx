@@ -40,7 +40,7 @@ const Alert: React.FC<AlertProps> = props => (
     }`}
   >
     <div>
-      <span className="w-6 h-6">{getIcon(props.type)}</span>
+      <span className='w-6 h-6'>{getIcon(props.type)}</span>
       <span>{props.children}</span>
     </div>
   </div>
