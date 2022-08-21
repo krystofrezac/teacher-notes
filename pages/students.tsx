@@ -13,7 +13,9 @@ import Button from 'app/core/components/Button';
 import Card, { CardActions } from 'app/core/components/Card';
 import Flex from 'app/core/components/Flex';
 import Icon from 'app/core/components/Icon';
+import Overlay, { OverlayContainer } from 'app/core/components/Overlay';
 import Spacer from 'app/core/components/Spacer';
+import Spinner from 'app/core/components/Spinner';
 import DefaultLayout from 'app/core/layouts/Default';
 import StudentDeleteModal from 'app/students/components/StudentDeleteModal';
 import StudentForm from 'app/students/components/StudentForm';
@@ -32,26 +34,28 @@ const StudentsPage: BlitzPage = () => {
   });
 
   const splitFilter = state.filter.split(' ');
-  const [data, { isLoading, isSuccess, refetch }] = useQuery(
+  const [data, { isLoading, isSuccess, refetch, isRefetching }] = useQuery(
     getStudents,
     {
       where: {
         OR: [
           {
-            firstName: { contains: state.filter },
+            firstName: { contains: state.filter, mode: 'insensitive' },
           },
-          { lastName: { contains: state.filter } },
-          { firstName: { contains: splitFilter[0] } },
+          { lastName: { contains: state.filter, mode: 'insensitive' } },
+          { firstName: { contains: splitFilter[0], mode: 'insensitive' } },
           (splitFilter[1]?.length ?? 0) > 0
-            ? { lastName: { contains: splitFilter[1] } }
+            ? { lastName: { contains: splitFilter[1], mode: 'insensitive' } }
             : {},
         ],
       },
     },
     {
       suspense: false,
+      keepPreviousData: true,
     },
   );
+
   const [createStudentMutation] = useMutation(createStudent);
   const [updateStudentMutation] = useMutation(updateStudent);
   const [deleteStudentMutation] = useMutation(deleteStudent);
@@ -125,7 +129,7 @@ const StudentsPage: BlitzPage = () => {
         onClose={handleStudentDeleteModalCancel}
       />
 
-      <Card loading={isLoading} noPadding>
+      <Card noPadding>
         <Spacer all='1' bottom='0'>
           <CardActions>
             <input
@@ -152,46 +156,51 @@ const StudentsPage: BlitzPage = () => {
             <Spacer top='1'>{`You don't have any students.`}</Spacer>
           </Flex>
         )}
-        <table className='table'>
-          <tbody>
-            {data?.students.map(student => (
-              <tr key={student.id}>
-                <td>
-                  {student.firstName} {student.lastName}
-                </td>
-                <td>
-                  <Flex gap='1/2' horizontal='end'>
-                    <Button
-                      size='xs'
-                      variant='ghost'
-                      square
-                      onClick={(): void => handleDeleteStudent(student.id)}
-                    >
-                      <Icon size='xs' variant='error'>
-                        <TrashIcon />
-                      </Icon>
-                    </Button>
-                    <Button
-                      size='xs'
-                      variant='ghost'
-                      square
-                      onClick={(): void => handleUpdateStudent(student.id)}
-                    >
-                      <Icon size='xs'>
-                        <PencilIcon />
-                      </Icon>
-                    </Button>
-                    <Button size='xs' square>
-                      <Icon size='xs'>
-                        <ChevronRightIcon />
-                      </Icon>
-                    </Button>
-                  </Flex>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <OverlayContainer>
+          <Overlay open={isLoading || isRefetching}>
+            <Spinner hidden={false} size='lg' />
+          </Overlay>
+          <table className='table w-full'>
+            <tbody>
+              {data?.students.map(student => (
+                <tr key={student.id}>
+                  <td>
+                    {student.firstName} {student.lastName}
+                  </td>
+                  <td>
+                    <Flex gap='1/2' horizontal='end'>
+                      <Button
+                        size='xs'
+                        variant='ghost'
+                        square
+                        onClick={(): void => handleDeleteStudent(student.id)}
+                      >
+                        <Icon size='xs' variant='error'>
+                          <TrashIcon />
+                        </Icon>
+                      </Button>
+                      <Button
+                        size='xs'
+                        variant='ghost'
+                        square
+                        onClick={(): void => handleUpdateStudent(student.id)}
+                      >
+                        <Icon size='xs'>
+                          <PencilIcon />
+                        </Icon>
+                      </Button>
+                      <Button size='xs' square>
+                        <Icon size='xs'>
+                          <ChevronRightIcon />
+                        </Icon>
+                      </Button>
+                    </Flex>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </OverlayContainer>
       </Card>
     </>
   );
