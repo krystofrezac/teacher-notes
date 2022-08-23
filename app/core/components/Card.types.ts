@@ -6,6 +6,7 @@ export interface CardProps {
   children: React.ReactNode;
   width?: CardWidth;
   noPadding?: boolean;
+  noGap?: boolean;
   loading?: boolean;
 }
 
