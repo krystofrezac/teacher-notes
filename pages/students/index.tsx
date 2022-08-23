@@ -1,6 +1,7 @@
 import { ChangeEventHandler, ReactElement, useState } from 'react';
 
 import { BlitzPage } from '@blitzjs/auth';
+import { Routes } from '@blitzjs/next';
 import { useMutation, useQuery } from '@blitzjs/rpc';
 import {
   ChevronRightIcon,
@@ -8,6 +9,7 @@ import {
   PlusIcon,
   TrashIcon,
 } from '@heroicons/react/outline';
+import Link from 'next/link';
 
 import Button from 'app/core/components/Button';
 import Card, { CardActions } from 'app/core/components/Card';
@@ -189,11 +191,13 @@ const StudentsPage: BlitzPage = () => {
                           <PencilIcon />
                         </Icon>
                       </Button>
-                      <Button size='xs' square>
-                        <Icon size='xs'>
-                          <ChevronRightIcon />
-                        </Icon>
-                      </Button>
+                      <Link href={Routes.LessonsPage({ id: student.id })}>
+                        <Button size='xs' square>
+                          <Icon size='xs'>
+                            <ChevronRightIcon />
+                          </Icon>
+                        </Button>
+                      </Link>
                     </Flex>
                   </td>
                 </tr>
@@ -208,6 +212,6 @@ const StudentsPage: BlitzPage = () => {
 
 StudentsPage.authenticate = true;
 StudentsPage.getLayout = (page): ReactElement => (
-  <DefaultLayout title='Students'>{page}</DefaultLayout>
+  <DefaultLayout title='Student'>{page}</DefaultLayout>
 );
 export default StudentsPage;
