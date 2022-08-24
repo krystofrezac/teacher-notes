@@ -18,6 +18,7 @@ type Column<RowData> = {
   label?: string;
 } & FieldOrKey<RowData>;
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type TableDefaultRowData = Record<string, any> & {
   id: number | string;
 };

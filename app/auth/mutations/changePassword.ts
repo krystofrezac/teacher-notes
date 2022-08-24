@@ -18,7 +18,7 @@ export default resolver.pipe(
 
     try {
       await authenticateUser(user.email, currentPassword);
-    } catch (error: any) {
+    } catch (error) {
       if (error instanceof AuthenticationError) {
         throw new Error('Invalid Password');
       }

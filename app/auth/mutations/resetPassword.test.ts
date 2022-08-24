@@ -1,4 +1,5 @@
 import { hash256, SecurePassword } from '@blitzjs/auth';
+import { Ctx } from '@blitzjs/next';
 import db from 'db';
 
 import resetPassword from './resetPassword';
@@ -7,11 +8,11 @@ beforeEach(async () => {
   await db.$reset();
 });
 
-const mockCtx: any = {
+const mockCtx = {
   session: {
     $create: jest.fn,
   },
-};
+} as unknown as Ctx;
 
 describe('resetPassword mutation', () => {
   it('works correctly', async () => {

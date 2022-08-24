@@ -23,7 +23,7 @@ const LoginForm: React.FC<LoginFormProps> = props => {
     try {
       const user = await loginMutation(values);
       props.onSuccess?.(user);
-    } catch (error: any) {
+    } catch (error) {
       if (error instanceof AuthenticationError) {
         return { [FORM_ERROR]: 'Sorry, those credentials are invalid' };
       }

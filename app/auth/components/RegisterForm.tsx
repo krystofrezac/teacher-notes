@@ -29,7 +29,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = props => {
             try {
               await registerMutation(values);
               props.onSuccess?.();
-            } catch (error: any) {
+            } catch (error) {
               if (
                 error.code === 'P2002' &&
                 error.meta?.target?.includes('email')

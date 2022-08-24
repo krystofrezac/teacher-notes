@@ -7,20 +7,22 @@ import React, {
 } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { FormProvider, useForm, UseFormProps } from 'react-hook-form';
-import { z } from 'zod';
+import { FormProvider, Path, useForm, UseFormProps } from 'react-hook-form';
+import { TypeOf, z } from 'zod';
 
 import Alert from './Alert';
 
 interface OnSubmitResult {
   FORM_ERROR?: string;
-  [prop: string]: any;
+  [prop: string]: string | undefined;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type SubmitHandler<S extends z.ZodType<any, any>> = (
   values: z.infer<S>,
 ) => Promise<void | OnSubmitResult>;
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type FormPropsDefaultS = z.ZodType<any, any>;
 export interface FormProps<S extends FormPropsDefaultS>
   extends Omit<PropsWithoutRef<JSX.IntrinsicElements['form']>, 'onSubmit'> {
@@ -36,7 +38,7 @@ export interface FormProps<S extends FormPropsDefaultS>
 
 export const FORM_ERROR = 'FORM_ERROR';
 
-const Form = <S extends z.ZodType<any, any>>({
+const Form = <S extends FormPropsDefaultS>({
   children,
   schema,
   initialValues,
@@ -52,7 +54,7 @@ const Form = <S extends z.ZodType<any, any>>({
       : undefined,
     defaultValues: initialValues,
   });
-  const [formError, setFormError] = useState<string | null>(null);
+  const [formError, setFormError] = useState<string | undefined>(undefined);
 
   const clearErrors = useCallback((): void => {
     setTimeout(() => {
@@ -83,7 +85,7 @@ const Form = <S extends z.ZodType<any, any>>({
             if (key === FORM_ERROR) {
               setFormError(value);
             } else {
-              ctx.setError(key as any, {
+              ctx.setError(key as Path<TypeOf<S>>, {
                 type: 'submit',
                 message: value,
               });
