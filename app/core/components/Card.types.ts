@@ -11,7 +11,7 @@ export interface CardProps {
 }
 
 export interface CardTitleProps {
-  children: React.ReactNode;
+  children?: string;
 }
 
 export interface CardActionsProps {
