@@ -15,8 +15,8 @@
     "prepare": "husky install"
   },
   "engines": {
-    "node": "16.16.0",
-    "npm": "8.14.0"
+    "node": "16.17.0",
+    "npm": "8.19.1"
   },
   "prisma": {
     "schema": "db/schema.prisma"
