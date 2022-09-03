@@ -1,8 +1,9 @@
 import { ReactElement, useState } from 'react';
 
-import { BlitzPage, useParam } from '@blitzjs/next';
+import { BlitzPage, Routes, useParam } from '@blitzjs/next';
 import { useMutation, useQuery } from '@blitzjs/rpc';
 import { ChevronRightIcon, PlusIcon } from '@heroicons/react/outline';
+import Link from 'next/link';
 
 import Button from 'app/core/components/Button';
 import { CardTitle } from 'app/core/components/Card';
@@ -17,7 +18,7 @@ import getLessons from 'app/lessons/queries/getLessons';
 import getStudent from 'app/students/queries/getStudent';
 
 const LessonsPage: BlitzPage = () => {
-  const studentId = useParam('id', 'number');
+  const studentId = useParam('studentId', 'number');
   const [state, setState] = useState({ creatingLesson: false });
   const [studentData, { isLoading: isStudentLoading }] = useQuery(
     getStudent,
@@ -84,12 +85,20 @@ const LessonsPage: BlitzPage = () => {
             </Button>
           </Flex>
         }
-        rowActions={(_row): ReactElement[] => [
-          <Button key='ahoj' size='xs' square>
-            <Icon size='xs'>
-              <ChevronRightIcon />
-            </Icon>
-          </Button>,
+        rowActions={(row): ReactElement[] => [
+          <Link
+            key='lessonLink'
+            href={Routes.LessonPage({
+              studentId: studentId ?? -1,
+              lessonId: row.id,
+            })}
+          >
+            <Button size='xs' square>
+              <Icon size='xs'>
+                <ChevronRightIcon />
+              </Icon>
+            </Button>
+          </Link>,
         ]}
         hideTableHeader
         cardLoading={isStudentLoading}

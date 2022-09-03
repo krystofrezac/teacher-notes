@@ -159,7 +159,10 @@ const StudentsPage: BlitzPage = () => {
               <PencilIcon />
             </Icon>
           </Button>,
-          <Link key='detail' href={Routes.LessonsPage({ id: student.id })}>
+          <Link
+            key='detail'
+            href={Routes.LessonsPage({ studentId: student.id })}
+          >
             <Button size='xs' square>
               <Icon size='xs'>
                 <ChevronRightIcon />
