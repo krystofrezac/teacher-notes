@@ -30,7 +30,7 @@ const Card: React.FC<CardProps> = props => {
           className='card-body'
           style={{
             padding: theme.spacing[props.noPadding ? '0' : '1'],
-            gap: theme.spacing[1],
+            gap: props.noGap ? theme.spacing[0] : theme.spacing[1],
           }}
         >
           {props.children}

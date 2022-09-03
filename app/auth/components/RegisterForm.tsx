@@ -25,11 +25,12 @@ export const RegisterForm: React.FC<RegisterFormProps> = props => {
 
         <Form
           schema={Signup}
+          initialValues={{ email: '', password: '' }}
           onSubmit={async (values): Promise<Record<string, string> | void> => {
             try {
               await registerMutation(values);
               props.onSuccess?.();
-            } catch (error: any) {
+            } catch (error) {
               if (
                 error.code === 'P2002' &&
                 error.meta?.target?.includes('email')

@@ -36,7 +36,7 @@ const ForgotPasswordPage: BlitzPage = () => {
             ): Promise<{ [FORM_ERROR]: string } | void> => {
               try {
                 await forgotPasswordMutation(values);
-              } catch (error: any) {
+              } catch (error) {
                 return {
                   [FORM_ERROR]:
                     'Sorry, we had an unexpected error. Please try again.',

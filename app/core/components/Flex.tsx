@@ -22,6 +22,7 @@ const getJustifyContentClass = (
     start: 'justify-start',
     center: 'justify-center',
     end: 'justify-end',
+    'space-between': 'justify-between',
   }[(direction === 'column' ? vertical : horizontal) ?? 'start'];
 };
 
@@ -34,6 +35,7 @@ const getAlignItemsClass = (
     start: 'items-start',
     center: 'items-center',
     end: 'items-end',
+    'space-between': 'items-between',
   }[(direction === 'column' ? horizontal : vertical) ?? 'start'];
 };
 

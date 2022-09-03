@@ -42,7 +42,7 @@ const ResetPasswordPage: BlitzPage = () => {
             ): Promise<{ [FORM_ERROR]: string } | void> => {
               try {
                 await resetPasswordMutation(values);
-              } catch (error: any) {
+              } catch (error) {
                 if (error.name === 'ResetPasswordError') {
                   return {
                     [FORM_ERROR]: error.message,

@@ -1,6 +1,7 @@
 import { ChangeEventHandler, ReactElement, useState } from 'react';
 
 import { BlitzPage } from '@blitzjs/auth';
+import { Routes } from '@blitzjs/next';
 import { useMutation, useQuery } from '@blitzjs/rpc';
 import {
   ChevronRightIcon,
@@ -8,14 +9,13 @@ import {
   PlusIcon,
   TrashIcon,
 } from '@heroicons/react/outline';
+import Link from 'next/link';
 
 import Button from 'app/core/components/Button';
-import Card, { CardActions } from 'app/core/components/Card';
+import { CardActions } from 'app/core/components/Card';
+import CardTable from 'app/core/components/CardTable';
 import Flex from 'app/core/components/Flex';
 import Icon from 'app/core/components/Icon';
-import Overlay, { OverlayContainer } from 'app/core/components/Overlay';
-import Spacer from 'app/core/components/Spacer';
-import Spinner from 'app/core/components/Spinner';
 import DefaultLayout from 'app/core/layouts/Default';
 import StudentDeleteModal from 'app/students/components/StudentDeleteModal';
 import StudentForm from 'app/students/components/StudentForm';
@@ -34,7 +34,7 @@ const StudentsPage: BlitzPage = () => {
   });
 
   const splitFilter = state.filter.split(' ');
-  const [data, { isLoading, isSuccess, refetch, isRefetching }] = useQuery(
+  const [data, { isLoading, refetch, isRefetching }] = useQuery(
     getStudents,
     {
       where: {
@@ -53,6 +53,7 @@ const StudentsPage: BlitzPage = () => {
     {
       suspense: false,
       keepPreviousData: true,
+      refetchOnWindowFocus: false,
     },
   );
 
@@ -68,7 +69,7 @@ const StudentsPage: BlitzPage = () => {
         ...values,
       });
 
-    await refetch();
+    refetch().catch(() => {});
   };
   const handleStudentFormClose = (): void => {
     setState(prevState => ({
@@ -81,7 +82,7 @@ const StudentsPage: BlitzPage = () => {
   const handleStudentDeleteModalSubmit = async (): Promise<void> => {
     if (!state.deletingStudentId) return;
     await deleteStudentMutation({ id: state.deletingStudentId });
-    await refetch();
+    refetch().catch(() => {});
   };
   const handleStudentDeleteModalCancel = (): void => {
     setState(prevState => ({ ...prevState, deletingStudentId: undefined }));
@@ -101,7 +102,7 @@ const StudentsPage: BlitzPage = () => {
     setState(prevState => ({ ...prevState, filter: e.target.value }));
   };
 
-  const getStudentFormActionText = (): string | undefined => {
+  const getStudentFormsubmitText = (): string | undefined => {
     if (state.creatingStudent) return 'Create';
     if (state.updatingStudentId !== undefined) return 'Update';
   };
@@ -118,7 +119,7 @@ const StudentsPage: BlitzPage = () => {
       <StudentForm
         open={state.creatingStudent || state.updatingStudentId !== undefined}
         initialValues={updatingStudent}
-        actionText={getStudentFormActionText()}
+        submitText={getStudentFormsubmitText()}
         onSubmit={handleStudentFormSubmit}
         onClose={handleStudentFormClose}
       />
@@ -129,85 +130,76 @@ const StudentsPage: BlitzPage = () => {
         onClose={handleStudentDeleteModalCancel}
       />
 
-      <Card noPadding>
-        <Spacer all='1' bottom='0'>
-          <CardActions>
+      <CardTable
+        tableLoading={isLoading || isRefetching}
+        data={data?.students}
+        columns={[
+          { key: 'name', render: row => `${row.firstName} ${row.lastName}` },
+        ]}
+        rowActions={(student): ReactElement[] => [
+          <Button
+            key='delete'
+            size='xs'
+            variant='ghost'
+            square
+            onClick={(): void => handleDeleteStudent(student.id)}
+          >
+            <Icon size='xs' variant='error'>
+              <TrashIcon />
+            </Icon>
+          </Button>,
+          <Button
+            key='update'
+            size='xs'
+            variant='ghost'
+            square
+            onClick={(): void => handleUpdateStudent(student.id)}
+          >
+            <Icon size='xs'>
+              <PencilIcon />
+            </Icon>
+          </Button>,
+          <Link
+            key='detail'
+            href={Routes.LessonsPage({ studentId: student.id })}
+          >
+            <Button size='xs' square>
+              <Icon size='xs'>
+                <ChevronRightIcon />
+              </Icon>
+            </Button>
+          </Link>,
+        ]}
+        header={
+          <Flex gap='1' vertical='center'>
             <input
               className='input input-bordered input-sm input-ghost grow'
               placeholder='Filter'
               value={state.filter}
               onChange={handleFilterChange}
             />
-            <Button
-              variant='primary'
-              size='sm'
-              square
-              onClick={handleCreateStudent}
-            >
-              <Icon size='sm'>
-                <PlusIcon />
-              </Icon>
-            </Button>
-          </CardActions>
-        </Spacer>
-
-        {isSuccess && data?.count === 0 && (
-          <Flex horizontal='center' fullWidth>
-            <Spacer top='1'>{`You don't have any students.`}</Spacer>
+            <CardActions>
+              <Button
+                variant='primary'
+                size='sm'
+                square
+                onClick={handleCreateStudent}
+              >
+                <Icon size='sm'>
+                  <PlusIcon />
+                </Icon>
+              </Button>
+            </CardActions>
           </Flex>
-        )}
-        <OverlayContainer>
-          <Overlay open={isLoading || isRefetching}>
-            <Spinner hidden={false} size='lg' />
-          </Overlay>
-          <table className='table w-full'>
-            <tbody>
-              {data?.students.map(student => (
-                <tr key={student.id}>
-                  <td>
-                    {student.firstName} {student.lastName}
-                  </td>
-                  <td>
-                    <Flex gap='1/2' horizontal='end'>
-                      <Button
-                        size='xs'
-                        variant='ghost'
-                        square
-                        onClick={(): void => handleDeleteStudent(student.id)}
-                      >
-                        <Icon size='xs' variant='error'>
-                          <TrashIcon />
-                        </Icon>
-                      </Button>
-                      <Button
-                        size='xs'
-                        variant='ghost'
-                        square
-                        onClick={(): void => handleUpdateStudent(student.id)}
-                      >
-                        <Icon size='xs'>
-                          <PencilIcon />
-                        </Icon>
-                      </Button>
-                      <Button size='xs' square>
-                        <Icon size='xs'>
-                          <ChevronRightIcon />
-                        </Icon>
-                      </Button>
-                    </Flex>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </OverlayContainer>
-      </Card>
+        }
+        hideTableHeader
+      />
     </>
   );
 };
 
 StudentsPage.authenticate = true;
 StudentsPage.getLayout = (page): ReactElement => (
-  <DefaultLayout title='Students'>{page}</DefaultLayout>
+  <DefaultLayout title='Student'>{page}</DefaultLayout>
 );
 export default StudentsPage;

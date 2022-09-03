@@ -1,22 +1,22 @@
 import { FC } from 'react';
 
-import { FORM_ERROR, SubmitHandler } from 'app/core/components/Form';
+import { SubmitHandler } from 'react-hook-form';
+
+import { FORM_ERROR } from 'app/core/components/Form';
 import FormButton from 'app/core/components/FormButton';
 import Modal, { ModalActions, ModalTitle } from 'app/core/components/Modal';
 import ModalForm from 'app/core/components/ModalForm';
+import TextareaInput from 'app/core/components/TextareaInput';
 import TextInput from 'app/core/components/TextInput';
-import useDefinedValue from 'app/core/hooks/useDefinedValue';
 
-import Student from '../validations/students';
+import Lesson from '../validations/lesson';
 
-import { StudentFormProps } from './StudentForm.types';
+import { LessonFormProps, LessonFormValues } from './LessonForm.types';
 
-const defaultInitialValues = { firstName: '', lastName: '' };
+const defaultInitialValues = { date: '', description: '' };
 
-const StudentForm: FC<StudentFormProps> = props => {
-  const submitText = useDefinedValue(props.submitText);
-
-  const handleSubmit: SubmitHandler<typeof Student> = async values => {
+const LessonForm: FC<LessonFormProps> = props => {
+  const submitHandler: SubmitHandler<LessonFormValues> = async values => {
     try {
       await props.onSubmit(values);
       props.onClose();
@@ -29,22 +29,22 @@ const StudentForm: FC<StudentFormProps> = props => {
 
   return (
     <Modal open={props.open}>
-      <ModalTitle>{submitText} student</ModalTitle>
+      <ModalTitle>Create lesson</ModalTitle>
       <ModalForm
-        open={props.open}
-        schema={Student}
+        schema={Lesson}
         initialValues={props.initialValues ?? defaultInitialValues}
-        onSubmit={handleSubmit}
+        open={props.open}
+        onSubmit={submitHandler}
       >
-        <TextInput name='firstName' label='First name' />
-        <TextInput name='lastName' label='Last name' />
+        <TextInput type='date' name='date' label='Date' />
+        <TextareaInput name='description' label='Description' />
 
         <ModalActions>
           <FormButton variant='ghost' onClick={props.onClose}>
             Cancel
           </FormButton>
           <FormButton type='submit' variant='primary'>
-            {submitText}
+            {props.submitText}
           </FormButton>
         </ModalActions>
       </ModalForm>
@@ -52,4 +52,4 @@ const StudentForm: FC<StudentFormProps> = props => {
   );
 };
 
-export default StudentForm;
+export default LessonForm;

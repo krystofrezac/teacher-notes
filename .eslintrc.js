@@ -62,6 +62,7 @@ module.exports = {
           { argsIgnorePattern: '^_', ignoreRestSiblings: true },
         ],
         '@typescript-eslint/explicit-function-return-type': 'error',
+        '@typescript-eslint/no-explicit-any': 'error',
       },
     },
     {
