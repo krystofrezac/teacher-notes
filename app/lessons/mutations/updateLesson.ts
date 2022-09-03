@@ -5,6 +5,7 @@ import { z } from 'zod';
 const UpdateLesson = z.object({
   id: z.number(),
   date: z.date(),
+  description: z.string(),
 });
 
 export default resolver.pipe(

@@ -44,10 +44,10 @@ const LessonsPage: BlitzPage = () => {
     });
     refetchLessons().catch(() => {});
   };
+
   const handleLessonFormClose = (): void => {
     setState(prevState => ({ ...prevState, creatingLesson: false }));
   };
-
   const handleCreateLesson = (): void => {
     setState(prevState => ({ ...prevState, creatingLesson: true }));
   };
@@ -56,6 +56,7 @@ const LessonsPage: BlitzPage = () => {
     <>
       <LessonForm
         open={state.creatingLesson}
+        submitText='Create'
         onSubmit={handleLessonFormSubmit}
         onClose={handleLessonFormClose}
       />

@@ -39,7 +39,11 @@ const LoginForm: React.FC<LoginFormProps> = props => {
       <Card width='md'>
         <CardTitle>Login</CardTitle>
 
-        <Form schema={Login} onSubmit={handleSubmit}>
+        <Form
+          schema={Login}
+          initialValues={{ email: '', password: '' }}
+          onSubmit={handleSubmit}
+        >
           <TextInput name='email' label='Email' />
           <TextInput name='password' label='Password' type='password' />
 

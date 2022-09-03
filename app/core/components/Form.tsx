@@ -30,7 +30,7 @@ export interface FormProps<S extends FormPropsDefaultS>
   children?: ReactNode;
   /** Text to display in the submit button */
   schema?: S;
-  initialValues?: UseFormProps<z.infer<S>>['defaultValues'];
+  initialValues: UseFormProps<z.infer<S>>['defaultValues'];
   submitResetTimeout?: number;
   clearErrorsFunction?: React.MutableRefObject<() => void>;
   onSubmit: SubmitHandler<S>;

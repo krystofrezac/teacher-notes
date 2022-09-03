@@ -25,6 +25,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = props => {
 
         <Form
           schema={Signup}
+          initialValues={{ email: '', password: '' }}
           onSubmit={async (values): Promise<Record<string, string> | void> => {
             try {
               await registerMutation(values);

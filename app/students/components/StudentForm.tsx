@@ -14,7 +14,7 @@ import { StudentFormProps } from './StudentForm.types';
 const defaultInitialValues = { firstName: '', lastName: '' };
 
 const StudentForm: FC<StudentFormProps> = props => {
-  const actionText = useDefinedValue(props.actionText);
+  const submitText = useDefinedValue(props.submitText);
 
   const handleSubmit: SubmitHandler<typeof Student> = async values => {
     try {
@@ -29,7 +29,7 @@ const StudentForm: FC<StudentFormProps> = props => {
 
   return (
     <Modal open={props.open}>
-      <ModalTitle>{actionText} student</ModalTitle>
+      <ModalTitle>{submitText} student</ModalTitle>
       <ModalForm
         open={props.open}
         schema={Student}
@@ -44,7 +44,7 @@ const StudentForm: FC<StudentFormProps> = props => {
             Cancel
           </FormButton>
           <FormButton type='submit' variant='primary'>
-            {actionText}
+            {submitText}
           </FormButton>
         </ModalActions>
       </ModalForm>

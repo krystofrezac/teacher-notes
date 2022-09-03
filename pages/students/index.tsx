@@ -102,7 +102,7 @@ const StudentsPage: BlitzPage = () => {
     setState(prevState => ({ ...prevState, filter: e.target.value }));
   };
 
-  const getStudentFormActionText = (): string | undefined => {
+  const getStudentFormsubmitText = (): string | undefined => {
     if (state.creatingStudent) return 'Create';
     if (state.updatingStudentId !== undefined) return 'Update';
   };
@@ -119,7 +119,7 @@ const StudentsPage: BlitzPage = () => {
       <StudentForm
         open={state.creatingStudent || state.updatingStudentId !== undefined}
         initialValues={updatingStudent}
-        actionText={getStudentFormActionText()}
+        submitText={getStudentFormsubmitText()}
         onSubmit={handleStudentFormSubmit}
         onClose={handleStudentFormClose}
       />

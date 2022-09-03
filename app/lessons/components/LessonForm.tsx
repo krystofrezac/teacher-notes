@@ -13,6 +13,8 @@ import Lesson from '../validations/lesson';
 
 import { LessonFormProps, LessonFormValues } from './LessonForm.types';
 
+const defaultInitialValues = { date: '', description: '' };
+
 const LessonForm: FC<LessonFormProps> = props => {
   const submitHandler: SubmitHandler<LessonFormValues> = async values => {
     try {
@@ -30,10 +32,8 @@ const LessonForm: FC<LessonFormProps> = props => {
       <ModalTitle>Create lesson</ModalTitle>
       <ModalForm
         schema={Lesson}
-        initialValues={{
-          date: new Date(Date.now()).toISOString().split('T')[0],
-        }}
-        open
+        initialValues={props.initialValues ?? defaultInitialValues}
+        open={props.open}
         onSubmit={submitHandler}
       >
         <TextInput type='date' name='date' label='Date' />
@@ -44,7 +44,7 @@ const LessonForm: FC<LessonFormProps> = props => {
             Cancel
           </FormButton>
           <FormButton type='submit' variant='primary'>
-            Create
+            {props.submitText}
           </FormButton>
         </ModalActions>
       </ModalForm>
