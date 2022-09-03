@@ -27,7 +27,14 @@ const LessonForm: FC<LessonFormProps> = props => {
   return (
     <Modal open={props.open}>
       <ModalTitle>Create lesson</ModalTitle>
-      <ModalForm schema={Lesson} open onSubmit={submitHandler}>
+      <ModalForm
+        schema={Lesson}
+        initialValues={{
+          date: new Date(Date.now()).toISOString().split('T')[0],
+        }}
+        open
+        onSubmit={submitHandler}
+      >
         <TextInput type='date' name='date' label='Date' />
 
         <ModalActions>

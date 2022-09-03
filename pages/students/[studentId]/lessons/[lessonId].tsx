@@ -10,6 +10,7 @@ const LessonPage: BlitzPage = () => {
 
   return <>ahoj {lessonId}</>;
 };
+
 LessonPage.getLayout = (page): ReactElement => (
   <DefaultLayout title='Lesson'>{page}</DefaultLayout>
 );
