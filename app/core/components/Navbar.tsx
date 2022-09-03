@@ -119,7 +119,7 @@ const Navbar: React.FC<NavbarProps> = props => {
             element='a'
             variant='ghost'
           >
-            Flashcards
+            Teacher notes
           </Button>
         </Link>
       </div>
