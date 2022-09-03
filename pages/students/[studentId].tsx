@@ -113,4 +113,5 @@ const LessonsPage: BlitzPage = () => {
   );
 };
 
+LessonsPage.authenticate = true;
 export default LessonsPage;

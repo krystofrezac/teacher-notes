@@ -1,4 +1,4 @@
-import { BlitzPage } from '@blitzjs/next';
+import { BlitzPage, Routes } from '@blitzjs/next';
 import Link from 'next/link';
 
 import Button from 'app/core/components/Button';
@@ -15,7 +15,7 @@ const HomePage: BlitzPage = () => {
         functional.
       </HeroContent>
       <Flex direction='row' horizontal='center'>
-        <Link href='/'>
+        <Link href={Routes.StudentsPage()}>
           <Button variant='primary'>Try it</Button>
         </Link>
       </Flex>

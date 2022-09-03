@@ -198,7 +198,7 @@ const StudentsPage: BlitzPage = () => {
   );
 };
 
-StudentsPage.authenticate = true;
+StudentsPage.authenticate = { redirectTo: Routes.LoginPage() };
 StudentsPage.getLayout = (page): ReactElement => (
   <DefaultLayout title='Student'>{page}</DefaultLayout>
 );

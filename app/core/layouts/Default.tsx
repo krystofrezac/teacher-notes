@@ -49,7 +49,9 @@ const DefaultLayout: BlitzLayout<{
               )}
             </Spacer>
           </div>
-          <div className='pb-1 bg-gradient-to-b from-gray-200 to-transparent' />
+          {!props.hideContentTitle && (
+            <div className='pb-1 bg-gradient-to-b from-gray-200 to-transparent' />
+          )}
         </div>
 
         <Spacer all='1' top='0'>
