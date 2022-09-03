@@ -22,7 +22,7 @@ const LessonsPage: BlitzPage = () => {
   const [state, setState] = useState({ creatingLesson: false });
   const [studentData, { isLoading: isStudentLoading }] = useQuery(
     getStudent,
-    { id: studentId ?? 0 },
+    { id: studentId ?? -1 },
     { suspense: false, enabled: studentId !== undefined },
   );
   const [
