@@ -90,7 +90,6 @@ const LessonsPage: BlitzPage = () => {
           <Link
             key='lessonLink'
             href={Routes.LessonPage({
-              studentId: studentId ?? -1,
               lessonId: row.id,
             })}
           >
