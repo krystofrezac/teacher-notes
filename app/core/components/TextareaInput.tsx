@@ -1,8 +1,10 @@
+import { FC } from 'react';
+
 import useFormField from '../hooks/useFormField';
 
-import { TextInputProps } from './TextInput.types';
+import { TextareaInputProps } from './TextareaInput.types';
 
-const TextInput: React.FC<TextInputProps> = props => {
+const TextareaInput: FC<TextareaInputProps> = props => {
   const { inputProps, error } = useFormField(props.name);
 
   return (
@@ -12,10 +14,9 @@ const TextInput: React.FC<TextInputProps> = props => {
           {props.label}
         </span>
       </label>
-      <input
-        type={props.type}
-        className={`input input-bordered w-full  ${
-          error.show ? 'input-error' : ''
+      <textarea
+        className={`textarea textarea-bordered w-full  ${
+          error.show ? 'textarea-error' : ''
         }`}
         {...inputProps}
       />
@@ -32,4 +33,4 @@ const TextInput: React.FC<TextInputProps> = props => {
   );
 };
 
-export default TextInput;
+export default TextareaInput;

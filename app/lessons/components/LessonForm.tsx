@@ -6,6 +6,7 @@ import { FORM_ERROR } from 'app/core/components/Form';
 import FormButton from 'app/core/components/FormButton';
 import Modal, { ModalActions, ModalTitle } from 'app/core/components/Modal';
 import ModalForm from 'app/core/components/ModalForm';
+import TextareaInput from 'app/core/components/TextareaInput';
 import TextInput from 'app/core/components/TextInput';
 
 import Lesson from '../validations/lesson';
@@ -36,6 +37,7 @@ const LessonForm: FC<LessonFormProps> = props => {
         onSubmit={submitHandler}
       >
         <TextInput type='date' name='date' label='Date' />
+        <TextareaInput name='description' label='Description' />
 
         <ModalActions>
           <FormButton variant='ghost' onClick={props.onClose}>

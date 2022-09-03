@@ -4,6 +4,7 @@ import { z } from 'zod';
 
 const CreateLesson = z.object({
   date: z.date(),
+  description: z.string(),
   studentId: z.number(),
 });
 
