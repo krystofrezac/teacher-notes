@@ -22,6 +22,8 @@ export interface ButtonProps {
   variant?: ButtonVariant;
   size?: ButtonSize;
   square?: boolean;
+  noPadding?: boolean;
+  normalCase?: boolean;
   /** If btn classes should not be applied */
   simple?: boolean;
   loading?: boolean;

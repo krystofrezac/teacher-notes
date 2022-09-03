@@ -1,7 +1,7 @@
-import { ReactElement, useState } from 'react';
+import { useState } from 'react';
 
 import { BlitzPage } from '@blitzjs/auth';
-import { useParam } from '@blitzjs/next';
+import { Routes, useParam } from '@blitzjs/next';
 import { useMutation, useQuery } from '@blitzjs/rpc';
 import { PencilIcon } from '@heroicons/react/outline';
 
@@ -42,7 +42,15 @@ const LessonPage: BlitzPage = () => {
   };
 
   return (
-    <>
+    <DefaultLayout
+      title='Lesson'
+      backLink={{
+        link: Routes.LessonsPage({ studentId: lessonData?.studentId ?? -1 }),
+        text: `${lessonData?.student.firstName ?? ''} ${
+          lessonData?.student.lastName ?? ''
+        }`,
+      }}
+    >
       <LessonForm
         open={state.editing}
         initialValues={
@@ -69,11 +77,8 @@ const LessonPage: BlitzPage = () => {
         </CardTitle>
         {lessonData?.description}
       </Card>
-    </>
+    </DefaultLayout>
   );
 };
 
-LessonPage.getLayout = (page): ReactElement => (
-  <DefaultLayout title='Lesson'>{page}</DefaultLayout>
-);
 export default LessonPage;

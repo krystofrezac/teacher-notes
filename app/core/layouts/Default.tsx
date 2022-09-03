@@ -1,17 +1,24 @@
 import { BlitzLayout } from '@blitzjs/next';
+import { ChevronLeftIcon } from '@heroicons/react/outline';
+import { RouteUrlObject } from 'blitz';
 import Head from 'next/head';
+import Link from 'next/link';
 
+import Button from '../components/Button';
+import Flex from '../components/Flex';
+import Icon from '../components/Icon';
 import Navbar from '../components/Navbar';
 import Spacer from '../components/Spacer';
 
 const DefaultLayout: BlitzLayout<{
   title: string;
+  backLink?: { link: RouteUrlObject; text: string };
   hideContentTitle?: boolean;
   children?: React.ReactNode;
   goToAppButton?: boolean;
 }> = props => {
   return (
-    <div className=''>
+    <>
       <Head>
         <title>{`${props.title} - Flashcards`}</title>
         <link rel='icon' href='/favicon.ico' />
@@ -26,6 +33,20 @@ const DefaultLayout: BlitzLayout<{
                   <h1 className='text-xl'>{props.title}</h1>
                 </Spacer>
               )}
+              {props.backLink && (
+                <Spacer left='1/2' right='1/2'>
+                  <Link href={props.backLink.link}>
+                    <Button variant='link' size='xs' noPadding normalCase>
+                      <Flex vertical='center' gap='1/4'>
+                        <Icon size='xs'>
+                          <ChevronLeftIcon />
+                        </Icon>
+                        {props.backLink.text}
+                      </Flex>
+                    </Button>
+                  </Link>
+                </Spacer>
+              )}
             </Spacer>
           </div>
           <div className='pb-1 bg-gradient-to-b from-gray-200 to-transparent' />
@@ -35,7 +56,7 @@ const DefaultLayout: BlitzLayout<{
           {props.children}
         </Spacer>
       </div>
-    </div>
+    </>
   );
 };
 
