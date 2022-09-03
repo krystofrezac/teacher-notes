@@ -15,7 +15,7 @@ const getButtonVariantClass = (variant?: ButtonVariant): string => {
     warning: 'btn-warning',
     error: 'btn-error',
     ghost: 'btn-ghost',
-    link: 'btn-link',
+    link: 'btn-link text-base-content',
   };
 
   return variants[variant];
@@ -43,6 +43,8 @@ const Button: React.FC<ButtonProps> = React.forwardRef((props, ref) => {
     'flex gap-2',
     props.className,
     props.square && 'btn-square',
+    props.noPadding && 'p-0',
+    props.normalCase && 'normal-case',
     !simple && getButtonSizeClass(props.size),
     !simple && getButtonVariantClass(props.variant),
   ]

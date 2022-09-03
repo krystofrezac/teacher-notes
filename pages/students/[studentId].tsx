@@ -53,7 +53,10 @@ const LessonsPage: BlitzPage = () => {
   };
 
   return (
-    <>
+    <DefaultLayout
+      title="Student's lessons"
+      backLink={{ link: Routes.StudentsPage(), text: 'Students' }}
+    >
       <LessonForm
         open={state.creatingLesson}
         submitText='Create'
@@ -106,12 +109,8 @@ const LessonsPage: BlitzPage = () => {
           !isStudentLoading && (isLessonsLoading || isLessonsRefetching)
         }
       />
-    </>
+    </DefaultLayout>
   );
 };
-
-LessonsPage.getLayout = (page): ReactElement => (
-  <DefaultLayout title="Student's lessons">{page}</DefaultLayout>
-);
 
 export default LessonsPage;
