@@ -5,6 +5,7 @@
     "dev": "blitz dev",
     "build": "blitz build",
     "start": "blitz start",
+    "start:prod": "blitz prisma migrate deploy && blitz start",
     "studio": "blitz prisma studio",
     "lint": "eslint --ignore-path .gitignore --ext .js,.ts,.tsx .",
     "lint-fix": "eslint --fix --max-warnings=0 --ignore-path .gitignore --ext .js,.ts,.tsx .",
