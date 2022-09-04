@@ -2,7 +2,11 @@ import { ReactElement, useState } from 'react';
 
 import { BlitzPage, Routes, useParam } from '@blitzjs/next';
 import { useMutation, useQuery } from '@blitzjs/rpc';
-import { ChevronRightIcon, PlusIcon } from '@heroicons/react/outline';
+import {
+  AdjustmentsIcon,
+  ChevronRightIcon,
+  PlusIcon,
+} from '@heroicons/react/outline';
 import Link from 'next/link';
 
 import Button from 'app/core/components/Button';
@@ -11,6 +15,8 @@ import CardTable from 'app/core/components/CardTable';
 import Flex from 'app/core/components/Flex';
 import Icon from 'app/core/components/Icon';
 import DefaultLayout from 'app/core/layouts/Default';
+import LessonFilterForm from 'app/lessons/components/LessonFilterForm';
+import { LessonFilterFormSubmitHandler } from 'app/lessons/components/LessonFilterForm.types';
 import LessonForm from 'app/lessons/components/LessonForm';
 import { LessonFormSubmitHandler } from 'app/lessons/components/LessonForm.types';
 import createLesson from 'app/lessons/mutations/createLesson';
@@ -19,7 +25,11 @@ import getStudent from 'app/students/queries/getStudent';
 
 const LessonsPage: BlitzPage = () => {
   const studentId = useParam('studentId', 'number');
-  const [state, setState] = useState({ creatingLesson: false });
+  const [state, setState] = useState({
+    creatingLesson: false,
+    filter: null as { description: string } | null,
+    filterOpen: false,
+  });
   const [studentData, { isLoading: isStudentLoading }] = useQuery(
     getStudent,
     { id: studentId ?? -1 },
@@ -34,7 +44,13 @@ const LessonsPage: BlitzPage = () => {
     },
   ] = useQuery(
     getLessons,
-    { where: { studentId }, orderBy: { date: 'desc' } },
+    {
+      where: {
+        studentId,
+        description: { contains: state.filter?.description },
+      },
+      orderBy: { date: 'desc' },
+    },
     { suspense: false },
   );
   const [createLessonMutation] = useMutation(createLesson);
@@ -48,12 +64,25 @@ const LessonsPage: BlitzPage = () => {
     });
     refetchLessons().catch(() => {});
   };
-
+  const handleLessonFormOpen = (): void => {
+    setState(prevState => ({ ...prevState, creatingLesson: true }));
+  };
   const handleLessonFormClose = (): void => {
     setState(prevState => ({ ...prevState, creatingLesson: false }));
   };
-  const handleCreateLesson = (): void => {
-    setState(prevState => ({ ...prevState, creatingLesson: true }));
+
+  const handleLessonFilterFormSubmit: LessonFilterFormSubmitHandler =
+    values => {
+      setState(prevState => ({ ...prevState, filter: values }));
+    };
+  const handleLessonFilterFormClear = (): void => {
+    setState(prevState => ({ ...prevState, filter: null }));
+  };
+  const handleLessonFilterFormOpen = (): void => {
+    setState(prevState => ({ ...prevState, filterOpen: true }));
+  };
+  const handleLessonFilterFormClose = (): void => {
+    setState(prevState => ({ ...prevState, filterOpen: false }));
   };
 
   return (
@@ -67,13 +96,29 @@ const LessonsPage: BlitzPage = () => {
         onSubmit={handleLessonFormSubmit}
         onClose={handleLessonFormClose}
       />
+      <LessonFilterForm
+        open={state.filterOpen}
+        initialValues={state.filter ?? undefined}
+        onSubmit={handleLessonFilterFormSubmit}
+        onClear={handleLessonFilterFormClear}
+        onClose={handleLessonFilterFormClose}
+      />
 
       <CardTable
         data={lessonsData?.lessons}
         columns={[
           {
-            key: 'date',
-            render: row => row.date.toLocaleDateString(),
+            key: 'all',
+            render: row => (
+              <Flex direction='column'>
+                <span>{row.date.toLocaleDateString()}</span>
+                {false && (
+                  <span className='text-ellipsis overflow-hidden text-sm text-gray-400'>
+                    {row.description}
+                  </span>
+                )}
+              </Flex>
+            ),
           },
         ]}
         header={
@@ -81,16 +126,28 @@ const LessonsPage: BlitzPage = () => {
             <CardTitle>{`${studentData?.firstName ?? ''} ${
               studentData?.lastName ?? ''
             }`}</CardTitle>
-            <Button
-              variant='primary'
-              size='sm'
-              square
-              onClick={handleCreateLesson}
-            >
-              <Icon size='sm'>
-                <PlusIcon />
-              </Icon>
-            </Button>
+            <Flex gap='1/2'>
+              <Button
+                variant='ghost'
+                size='sm'
+                square
+                onClick={handleLessonFilterFormOpen}
+              >
+                <Icon size='sm'>
+                  <AdjustmentsIcon />
+                </Icon>
+              </Button>
+              <Button
+                variant='primary'
+                size='sm'
+                square
+                onClick={handleLessonFormOpen}
+              >
+                <Icon size='sm'>
+                  <PlusIcon />
+                </Icon>
+              </Button>
+            </Flex>
           </Flex>
         }
         rowActions={(row): ReactElement[] => [
