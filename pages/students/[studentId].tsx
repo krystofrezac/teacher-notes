@@ -32,7 +32,11 @@ const LessonsPage: BlitzPage = () => {
       isRefetching: isLessonsRefetching,
       refetch: refetchLessons,
     },
-  ] = useQuery(getLessons, { where: { studentId } }, { suspense: false });
+  ] = useQuery(
+    getLessons,
+    { where: { studentId }, orderBy: { date: 'desc' } },
+    { suspense: false },
+  );
   const [createLessonMutation] = useMutation(createLesson);
 
   const handleLessonFormSubmit: LessonFormSubmitHandler = async values => {
