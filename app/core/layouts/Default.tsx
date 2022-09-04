@@ -20,7 +20,7 @@ const DefaultLayout: BlitzLayout<{
   return (
     <>
       <Head>
-        <title>{`${props.title} - Teacher notes`}</title>
+        <title>{`${props.title} - Teacher's notes`}</title>
         <link rel='icon' href='/favicon.ico' />
       </Head>
       <div>

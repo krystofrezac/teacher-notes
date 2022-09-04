@@ -1,4 +1,4 @@
-# Teacher notes
+# Teacher's notes
 Simple app for keeping notes about lessons, so the teacher knows what was discussed last time.
 
 ## What to watch out for during development
