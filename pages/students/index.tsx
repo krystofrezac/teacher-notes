@@ -49,6 +49,7 @@ const StudentsPage: BlitzPage = () => {
             : {},
         ],
       },
+      orderBy: [{ firstName: 'asc' }, { lastName: 'asc' }],
     },
     {
       suspense: false,
