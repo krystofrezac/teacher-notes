@@ -47,7 +47,10 @@ const LessonsPage: BlitzPage = () => {
     {
       where: {
         studentId,
-        description: { contains: state.filter?.description },
+        description: {
+          contains: state.filter?.description,
+          mode: 'insensitive',
+        },
       },
       orderBy: { date: 'desc' },
     },
