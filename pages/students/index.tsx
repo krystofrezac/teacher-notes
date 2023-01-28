@@ -7,6 +7,7 @@ import {
   ChevronRightIcon,
   PencilIcon,
   PlusIcon,
+  SearchIcon,
   TrashIcon,
 } from '@heroicons/react/outline';
 import Link from 'next/link';
@@ -180,6 +181,13 @@ const StudentsPage: BlitzPage = () => {
               onChange={handleFilterChange}
             />
             <CardActions>
+              <Link href={Routes.StudentSearchPage()}>
+                <Button size='sm' square>
+                  <Icon size='sm'>
+                    <SearchIcon />
+                  </Icon>
+                </Button>
+              </Link>
               <Button
                 variant='primary'
                 size='sm'

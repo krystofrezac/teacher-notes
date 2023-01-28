@@ -115,11 +115,6 @@ const LessonsPage: BlitzPage = () => {
             render: row => (
               <Flex direction='column'>
                 <span>{row.date.toLocaleDateString()}</span>
-                {false && (
-                  <span className='text-ellipsis overflow-hidden text-sm text-gray-400'>
-                    {row.description}
-                  </span>
-                )}
               </Flex>
             ),
           },

@@ -9,16 +9,14 @@ import DefaultLayout from 'app/core/layouts/Default';
 const HomePage: BlitzPage = () => {
   return (
     <Hero className='mt-40'>
-      <HeroTitle>Still in development</HeroTitle>
+      <HeroTitle>Welcome!</HeroTitle>
       <HeroContent>
-        Not everything looks stunning right now, but hopefully it is fully
-        functional.
+        <Flex direction='row' horizontal='center'>
+          <Link href={Routes.StudentsPage()}>
+            <Button variant='primary'>Try it</Button>
+          </Link>
+        </Flex>
       </HeroContent>
-      <Flex direction='row' horizontal='center'>
-        <Link href={Routes.StudentsPage()}>
-          <Button variant='primary'>Try it</Button>
-        </Link>
-      </Flex>
     </Hero>
   );
 };
