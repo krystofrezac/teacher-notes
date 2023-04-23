@@ -7,6 +7,7 @@ import {
   ChevronRightIcon,
   PlusIcon,
 } from '@heroicons/react/outline';
+import { Prisma } from '@prisma/client';
 import Link from 'next/link';
 
 import Button from 'app/core/components/Button';
@@ -38,6 +39,20 @@ const LessonsPage: BlitzPage = () => {
     { id: studentId ?? -1 },
     { suspense: false, enabled: studentId !== undefined },
   );
+
+  const filterWhere: Prisma.LessonWhereInput = {
+    description: {
+      contains: state.filter?.description,
+      mode: 'insensitive',
+    },
+    TagsOnLessons: {
+      some: {
+        tagId: {
+          in: state.filter?.tags.map(({ id }) => id),
+        },
+      },
+    },
+  };
   const [
     lessonsData,
     {
@@ -50,17 +65,7 @@ const LessonsPage: BlitzPage = () => {
     {
       where: {
         studentId,
-        description: {
-          contains: state.filter?.description,
-          mode: 'insensitive',
-        },
-        TagsOnLessons: {
-          some: {
-            tagId: {
-              in: state.filter?.tags.map(({ id }) => id),
-            },
-          },
-        },
+        ...(state.filter ? filterWhere : {}),
       },
       orderBy: { date: 'desc' },
     },
@@ -74,7 +79,7 @@ const LessonsPage: BlitzPage = () => {
       ...values,
       date: new Date(values.date),
       studentId,
-      tagIds: values.tags.map(tag => tag.id),
+      tagIds: values.tags?.map(tag => tag.id) ?? [],
     });
     refetchLessons().catch(() => {});
   };

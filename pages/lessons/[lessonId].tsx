@@ -39,7 +39,7 @@ const LessonPage: BlitzPage = () => {
       ...values,
       id: lessonId,
       date: new Date(values.date),
-      tagIds: values.tags.map(tag => tag.id),
+      tagIds: values.tags?.map(tag => tag.id) ?? [],
     });
     refetchLessonData().catch(() => {});
   };
@@ -114,7 +114,7 @@ const LessonPage: BlitzPage = () => {
             </Button>
           </Flex>
         </Flex>
-        <Flex gap='1/2'>
+        <Flex gap='1/2' wrap>
           {lessonData?.TagsOnLessons.map(({ tag }) => (
             <Tag key={tag.id} title={tag.title} />
           ))}
