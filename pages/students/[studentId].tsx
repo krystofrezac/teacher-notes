@@ -30,7 +30,7 @@ const LessonsPage: BlitzPage = () => {
     creatingLesson: false,
     filter: null as {
       description: string;
-      tags: { id: number; title: string }[];
+      tags?: { id: number; title: string }[];
     } | null,
     filterOpen: false,
   });
@@ -45,13 +45,17 @@ const LessonsPage: BlitzPage = () => {
       contains: state.filter?.description,
       mode: 'insensitive',
     },
-    TagsOnLessons: {
-      some: {
-        tagId: {
-          in: state.filter?.tags.map(({ id }) => id),
-        },
-      },
-    },
+    ...(state.filter?.tags
+      ? {
+          TagsOnLessons: {
+            some: {
+              tagId: {
+                in: state.filter.tags.map(({ id }) => id),
+              },
+            },
+          },
+        }
+      : {}),
   };
   const [
     lessonsData,

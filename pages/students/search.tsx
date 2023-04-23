@@ -43,11 +43,15 @@ const StudentSearchPage: BlitzPage = () => {
           contains: state.filter?.description,
           mode: 'insensitive',
         },
-        TagsOnLessons: {
-          some: {
-            tagId: { in: state.filter?.tags?.map(tag => tag.id) },
-          },
-        },
+        ...(state.filter?.tags
+          ? {
+              TagsOnLessons: {
+                some: {
+                  tagId: { in: state.filter?.tags?.map(tag => tag.id) },
+                },
+              },
+            }
+          : {}),
       },
       orderBy: [
         {

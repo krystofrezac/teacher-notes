@@ -91,7 +91,14 @@ const TagsInput: FC<TagsInputProps> = ({ label, name }) => {
     !!pickedTags?.find(tag => tag.title === state.searchText);
   const createNewTagOption = !doesSearchedTagAlreadyExists
     ? [
-        <Button key='__newTag' simple onClick={handleCrateTag}>
+        <Button
+          key='__newTag'
+          simple
+          onClick={async (e): Promise<void> => {
+            e.preventDefault();
+            await handleCrateTag();
+          }}
+        >
           {`Create new tag: ${state.searchText}`}
         </Button>,
       ]
