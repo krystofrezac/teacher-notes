@@ -45,6 +45,8 @@ const Flex: FC<FlexProps> = props => {
   const classes = [
     'flex',
     props.fullWidth && 'w-full',
+    props.fullHeight && 'h-full',
+    props.wrap && 'flex-wrap',
     getDirectionClass(props.direction),
     getJustifyContentClass(props.direction, props.horizontal, props.vertical),
     getAlignItemsClass(props.direction, props.horizontal, props.vertical),

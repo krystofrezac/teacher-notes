@@ -1,8 +1,8 @@
 import { z } from 'zod';
 
-const LessonFilter = z.object({
-  description: z.string(),
+const StudentFilter = z.object({
+  description: z.string().optional(),
   tags: z.array(z.object({ id: z.number(), title: z.string() })).optional(),
 });
 
-export default LessonFilter;
+export default StudentFilter;

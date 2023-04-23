@@ -1,8 +1,9 @@
 import React from 'react';
 
 export interface DropdownProps {
-  trigger: React.ReactNode;
+  trigger?: React.ReactNode;
   options: React.ReactElement[];
+  open?: boolean;
 
   top?: boolean;
   end?: boolean;

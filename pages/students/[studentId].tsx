@@ -7,6 +7,7 @@ import {
   ChevronRightIcon,
   PlusIcon,
 } from '@heroicons/react/outline';
+import { Prisma } from '@prisma/client';
 import Link from 'next/link';
 
 import Button from 'app/core/components/Button';
@@ -27,7 +28,10 @@ const LessonsPage: BlitzPage = () => {
   const studentId = useParam('studentId', 'number');
   const [state, setState] = useState({
     creatingLesson: false,
-    filter: null as { description: string } | null,
+    filter: null as {
+      description: string;
+      tags?: { id: number; title: string }[];
+    } | null,
     filterOpen: false,
   });
   const [studentData, { isLoading: isStudentLoading }] = useQuery(
@@ -35,6 +39,24 @@ const LessonsPage: BlitzPage = () => {
     { id: studentId ?? -1 },
     { suspense: false, enabled: studentId !== undefined },
   );
+
+  const filterWhere: Prisma.LessonWhereInput = {
+    description: {
+      contains: state.filter?.description,
+      mode: 'insensitive',
+    },
+    ...(state.filter?.tags
+      ? {
+          TagsOnLessons: {
+            some: {
+              tagId: {
+                in: state.filter.tags.map(({ id }) => id),
+              },
+            },
+          },
+        }
+      : {}),
+  };
   const [
     lessonsData,
     {
@@ -47,10 +69,7 @@ const LessonsPage: BlitzPage = () => {
     {
       where: {
         studentId,
-        description: {
-          contains: state.filter?.description,
-          mode: 'insensitive',
-        },
+        ...(state.filter ? filterWhere : {}),
       },
       orderBy: { date: 'desc' },
     },
@@ -64,6 +83,7 @@ const LessonsPage: BlitzPage = () => {
       ...values,
       date: new Date(values.date),
       studentId,
+      tagIds: values.tags?.map(tag => tag.id) ?? [],
     });
     refetchLessons().catch(() => {});
   };
