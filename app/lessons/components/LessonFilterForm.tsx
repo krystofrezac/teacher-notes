@@ -5,6 +5,7 @@ import FormButton from 'app/core/components/FormButton';
 import Modal, { ModalActions, ModalTitle } from 'app/core/components/Modal';
 import ModalForm from 'app/core/components/ModalForm';
 import TextareaInput from 'app/core/components/TextareaInput';
+import TagsInput from 'app/tags/components/TagsInput/TagsInput';
 
 import LessonFilter from '../validations/lessonFilter';
 
@@ -29,6 +30,7 @@ const LessonFilterForm: FC<LessonFilterFormProps> = props => {
         schema={LessonFilter}
         onSubmit={handleSubmit}
       >
+        <TagsInput name='tags' label='Tags' />
         <TextareaInput name='description' label='Description' />
         <ModalActions>
           <FormButton variant='ghost' onClick={props.onClose}>

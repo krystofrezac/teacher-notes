@@ -27,7 +27,10 @@ const LessonsPage: BlitzPage = () => {
   const studentId = useParam('studentId', 'number');
   const [state, setState] = useState({
     creatingLesson: false,
-    filter: null as { description: string } | null,
+    filter: null as {
+      description: string;
+      tags: { id: number; title: string }[];
+    } | null,
     filterOpen: false,
   });
   const [studentData, { isLoading: isStudentLoading }] = useQuery(
@@ -50,6 +53,13 @@ const LessonsPage: BlitzPage = () => {
         description: {
           contains: state.filter?.description,
           mode: 'insensitive',
+        },
+        TagsOnLessons: {
+          some: {
+            tagId: {
+              in: state.filter?.tags.map(({ id }) => id),
+            },
+          },
         },
       },
       orderBy: { date: 'desc' },
