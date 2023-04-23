@@ -1,10 +1,18 @@
 import { useEffect, useState } from 'react';
 
-import { useFormContext, UseFormRegisterReturn } from 'react-hook-form';
+import {
+  FieldValues,
+  useFormContext,
+  UseFormRegisterReturn,
+  UseFormSetValue,
+  UseFormWatch,
+} from 'react-hook-form';
 
 interface UseFormFieldReturn {
   inputProps: UseFormRegisterReturn;
   error: { show: boolean; value: string };
+  setValue: UseFormSetValue<FieldValues>;
+  watch: UseFormWatch<FieldValues>;
 }
 
 const useFormField = (name: string): UseFormFieldReturn => {
@@ -13,6 +21,8 @@ const useFormField = (name: string): UseFormFieldReturn => {
   const {
     register,
     formState: { isSubmitting, errors },
+    setValue,
+    watch,
   } = useFormContext();
 
   const tempError = errors[name];
@@ -31,7 +41,7 @@ const useFormField = (name: string): UseFormFieldReturn => {
     ...register(name),
   };
 
-  return { inputProps, error };
+  return { inputProps, error, setValue, watch };
 };
 
 export default useFormField;

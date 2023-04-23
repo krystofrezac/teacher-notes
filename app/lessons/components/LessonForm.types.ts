@@ -7,14 +7,9 @@ export type LessonFormSubmitHandler = (
   values: LessonFormValues,
 ) => Promise<void>;
 
-interface InitialValues {
-  date: string;
-  description: string;
-}
-
 export interface LessonFormProps {
   open: boolean;
-  initialValues?: InitialValues;
+  initialValues?: LessonFormValues;
   submitText: string;
 
   onSubmit: LessonFormSubmitHandler;

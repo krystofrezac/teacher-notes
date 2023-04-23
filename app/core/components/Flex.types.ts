@@ -13,5 +13,7 @@ export interface FlexProps {
   horizontal?: FlexAlign;
   vertical?: FlexAlign;
 
+  wrap?: boolean;
   fullWidth?: boolean;
+  fullHeight?: boolean;
 }

@@ -13,7 +13,14 @@ export default resolver.pipe(
   async ({ id }, ctx) => {
     const lesson = await db.lesson.findFirst({
       where: { id, student: { userId: ctx.session.userId } },
-      include: { student: true },
+      include: {
+        student: true,
+        TagsOnLessons: {
+          include: {
+            tag: true,
+          },
+        },
+      },
     });
 
     if (!lesson) throw new NotFoundError();

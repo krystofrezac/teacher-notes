@@ -8,6 +8,7 @@ import Modal, { ModalActions, ModalTitle } from 'app/core/components/Modal';
 import ModalForm from 'app/core/components/ModalForm';
 import TextareaInput from 'app/core/components/TextareaInput';
 import TextInput from 'app/core/components/TextInput';
+import TagsInput from 'app/tags/components/TagsInput/TagsInput';
 
 import Lesson from '../validations/lesson';
 
@@ -37,6 +38,7 @@ const LessonForm: FC<LessonFormProps> = props => {
         onSubmit={submitHandler}
       >
         <TextInput type='date' name='date' label='Date' />
+        <TagsInput name='tags' label='Tags' />
         <TextareaInput name='description' label='Description' />
 
         <ModalActions>

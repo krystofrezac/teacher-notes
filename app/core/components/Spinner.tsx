@@ -1,4 +1,4 @@
-import { SpinnerProps, SpinnerSize } from './Spinner.types';
+import { SpinnerProps, SpinnerSize, SpinnerStatus } from './Spinner.types';
 
 const getSpinnerSizeClass = (size?: SpinnerSize): string => {
   const sizes: Record<SpinnerSize, string> = {
@@ -9,11 +9,20 @@ const getSpinnerSizeClass = (size?: SpinnerSize): string => {
   return sizes[size ?? 'md'];
 };
 
+const getSpinnerStatuColor = (status?: SpinnerStatus): string => {
+  const colors: Record<SpinnerStatus, string> = {
+    basic: 'text-white',
+    primary: 'text-primary',
+  };
+
+  return colors[status ?? 'basic'];
+};
+
 const Spinner: React.FC<SpinnerProps> = props => (
   <svg
     className={`animate-spin ${getSpinnerSizeClass(
       props.size,
-    )} text-white transition-opacity ${
+    )} ${getSpinnerStatuColor(props.status)}  transition-opacity ${
       props.hidden ? 'opacity-0' : 'opacity-100'
     } ${props.className ?? ''}`}
     xmlns='http://www.w3.org/2000/svg'

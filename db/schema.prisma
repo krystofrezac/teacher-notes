@@ -109,9 +109,9 @@ model TagsOnLessons {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  student   Lesson @relation(fields: [studentId], references: [id])
-  studentId Int
+  lesson   Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  lessonId Int
 
-  tag   Tag @relation(fields: [tagId], references: [id])
+  tag   Tag @relation(fields: [tagId], references: [id], onDelete: Cascade)
   tagId Int
 }

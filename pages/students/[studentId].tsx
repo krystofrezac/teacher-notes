@@ -64,6 +64,7 @@ const LessonsPage: BlitzPage = () => {
       ...values,
       date: new Date(values.date),
       studentId,
+      tagIds: values.tags.map(tag => tag.id),
     });
     refetchLessons().catch(() => {});
   };

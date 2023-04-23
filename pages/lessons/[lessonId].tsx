@@ -17,6 +17,7 @@ import { LessonFormSubmitHandler } from 'app/lessons/components/LessonForm.types
 import deleteLesson from 'app/lessons/mutations/deleteLesson';
 import updateLesson from 'app/lessons/mutations/updateLesson';
 import getLesson from 'app/lessons/queries/getLesson';
+import Tag from 'app/tags/components/TagsInput/Tag';
 
 const LessonPage: BlitzPage = () => {
   const lessonId = useParam('lessonId', 'number');
@@ -38,6 +39,7 @@ const LessonPage: BlitzPage = () => {
       ...values,
       id: lessonId,
       date: new Date(values.date),
+      tagIds: values.tags.map(tag => tag.id),
     });
     refetchLessonData().catch(() => {});
   };
@@ -78,6 +80,7 @@ const LessonPage: BlitzPage = () => {
           lessonData && {
             ...lessonData,
             date: lessonData.date.toISOString().split('T')[0]!,
+            tags: lessonData.TagsOnLessons.map(t => t.tag),
           }
         }
         submitText='Update'
@@ -110,6 +113,11 @@ const LessonPage: BlitzPage = () => {
               </Icon>
             </Button>
           </Flex>
+        </Flex>
+        <Flex gap='1/2'>
+          {lessonData?.TagsOnLessons.map(({ tag }) => (
+            <Tag key={tag.id} title={tag.title} />
+          ))}
         </Flex>
         {lessonData?.description}
       </Card>
