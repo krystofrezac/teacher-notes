@@ -19,11 +19,34 @@ import StudentSearchModal, {
 
 type State = {
   modalOpen: boolean;
-  filter: StudentSearchFormValues | null;
+};
+
+const getFilter = (): StudentSearchFormValues | null => {
+  if (typeof window === 'undefined') return null;
+  // eslint-disable-next-line no-restricted-globals
+  const search = new URLSearchParams(location.search);
+  const filter = search.get('filter');
+  if (!filter) return null;
+
+  try {
+    return JSON.parse(filter) ?? null;
+  } catch {
+    return null;
+  }
+};
+
+const setFilter = (filter: StudentSearchFormValues | null): void => {
+  // eslint-disable-next-line no-restricted-globals
+  const url = new URL(location.toString());
+  url.searchParams.set('filter', JSON.stringify(filter));
+  // eslint-disable-next-line no-restricted-globals
+  location.href = url.toString();
 };
 
 const StudentSearchPage: BlitzPage = () => {
-  const [state, setState] = useState<State>({ modalOpen: false, filter: null });
+  const [state, setState] = useState<State>({ modalOpen: false });
+
+  const filter = getFilter();
 
   const handleUpdateFilterClick = (): void =>
     setState(prevState => ({ ...prevState, modalOpen: true }));
@@ -31,23 +54,23 @@ const StudentSearchPage: BlitzPage = () => {
     setState(prevState => ({ ...prevState, modalOpen: false }));
   };
   const handleFormSubmit: StudentFilterFormSubmitHandler = values => {
-    setState(prevState => ({ ...prevState, filter: values }));
+    setFilter(values);
   };
 
-  const isFilterEmpty = !state.filter;
+  const isFilterEmpty = !filter;
   const [data] = useQuery(
     getLessons,
     {
       where: {
         description: {
-          contains: state.filter?.description,
+          contains: filter?.description,
           mode: 'insensitive',
         },
-        ...(state.filter?.tags
+        ...(filter?.tags
           ? {
               TagsOnLessons: {
                 some: {
-                  tagId: { in: state.filter?.tags?.map(tag => tag.id) },
+                  tagId: { in: filter?.tags?.map(tag => tag.id) },
                 },
               },
             }
@@ -109,7 +132,7 @@ const StudentSearchPage: BlitzPage = () => {
     <>
       <StudentSearchModal
         open={state.modalOpen}
-        initialValues={state.filter ?? undefined}
+        initialValues={filter ?? undefined}
         onClose={handleModalClose}
         onSubmit={handleFormSubmit}
       />
